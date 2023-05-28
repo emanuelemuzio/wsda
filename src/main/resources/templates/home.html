@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport">
+    <title>WSDA</title>
+</head>
+<body>
+
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+            <img class="bi me-2" th:src="logo.svg">
+        </a>
+    </header>
+</div>
+
+<div class="px-4 py-5 my-5 text-center">
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4 fs-2">Quickly handle the pre-paid cards sold in your own shop!</p>
+        <p class="lead mb-4">You can also check the balance of purchased cards if you possess the card's code</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Login</button>
+            <button id="check-balance-btn" type="button" class="btn btn-outline-secondary btn-lg px-4">Check balance</button>
+        </div>
+    </div>
+</div>
+<div id="check-balance-div" style="display: none" class="px-4 py-5 my-5 text-center">
+    <div class="col-lg-6 mx-auto">
+        <input type="text" class="form-control" placeholder="Card number" id="card-number" aria-label="Card number">
+        <div id="credit-card-response" style="display: none" class="my-4" ></div>
+    </div>
+</div>
+</body>
+<link rel="stylesheet" th:href="bootstrap.min.css">
+<script th:src="jquery-3.7.0.min.js"></script>
+<script th:src="bootstrap.min.js"></script>
+<script th:src="custom.js"></script>
+</html>

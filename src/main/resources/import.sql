@@ -1,0 +1,1 @@
+INSERT INTO wsda_user (age, email, name) VALUES (23, 'emanuelemuzio@hotmail.it', 'Emanuele Muzio');

@@ -1,6 +1,4 @@
-# eWallet
-
-### 0766230 - Emanuele Muzio
+# 0766230 - Emanuele Muzio
 
 ### General Info
 
@@ -21,8 +19,8 @@ The required functionalities are:
 ### Architecture
 
 1. Application data must be stored in a relational DB (MySQL is fine)
-2. The app must distinguish 2 different user types: admin user, which has access to functionalities 1, 3 and 4, and merchant user, who accesses functionalities 3 and 4.
-3. Functionality n.2 doesn't require the user to be authenticated, as it is available to anyone who possess the card number.
+2. The app must distinguish 2 different Utente types: admin Utente, which has access to functionalities 1, 3 and 4, and merchant Utente, who accesses functionalities 3 and 4.
+3. Functionality n.2 doesn't require the Utente to be authenticated, as it is available to anyone who possess the card number.
 
 
 ### Backend
@@ -51,15 +49,22 @@ Now that the few requirements have been listed, let's proceed to the project's s
 * Spring Boot 3.1.0
 * Maven 4.0
 * Apache Tomcat 10 (Embedded web server in Spring Boot)
-* PostgreSQL
+* PostgreSQL (also loaded into Spring Boot dependencies)
 
 ### Tools, dependencies and external libs
 
 * [initializr](https://github.com/spring-io/initializr) for initializing the project structure
 * IntelliJ Idea Ultimate (which already integrates the initializr)
 * [Jackson](https://github.com/FasterXML/jackson) for handling JSONs in Java
-* Docker (for the PostreSQL DB)
+* Docker (for running the PostgreSQL DB)
+* Spring Data JPA for accessing database
+* Bootstrap 5.1.3
+* jQuery 3.7.0
+* Thymeleaf template engine
 
+# Da sistemare
+
+* import.sql permette di generare degli utenti di default all'avvio del progetto
 
 
 
