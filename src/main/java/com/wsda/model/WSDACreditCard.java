@@ -1,4 +1,4 @@
-package com.wsda.entity;
+package com.wsda.model;
 
 import jakarta.persistence.*;
 import java.util.Objects;
@@ -13,6 +13,19 @@ public class WSDACreditCard {
     private Integer id;
     private String number;
     private Integer balance;
+
+    @ManyToOne
+    @JoinColumn(name = "wsda_user_id", referencedColumnName = "id")
+
+    private WSDAUser wsda_user;
+
+    public WSDAUser getWsda_user() {
+        return wsda_user;
+    }
+
+    public void setWsda_user(WSDAUser wsda_user) {
+        this.wsda_user = wsda_user;
+    }
 
     public Integer getId() {
         return id;
@@ -43,12 +56,12 @@ public class WSDACreditCard {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WSDACreditCard that = (WSDACreditCard) o;
-        return Objects.equals(id, that.id) && Objects.equals(number, that.number) && Objects.equals(balance, that.balance);
+        return Objects.equals(id, that.id) && Objects.equals(number, that.number) && Objects.equals(balance, that.balance) && Objects.equals(wsda_user, that.wsda_user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, balance);
+        return Objects.hash(id, number, balance, wsda_user);
     }
 
     @Override
@@ -57,6 +70,7 @@ public class WSDACreditCard {
                 "id=" + id +
                 ", number='" + number + '\'' +
                 ", balance=" + balance +
+                ", wsda_user=" + wsda_user +
                 '}';
     }
 }

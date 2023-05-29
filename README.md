@@ -19,8 +19,8 @@ The required functionalities are:
 ### Architecture
 
 1. Application data must be stored in a relational DB (MySQL is fine)
-2. The app must distinguish 2 different Utente types: admin Utente, which has access to functionalities 1, 3 and 4, and merchant Utente, who accesses functionalities 3 and 4.
-3. Functionality n.2 doesn't require the Utente to be authenticated, as it is available to anyone who possess the card number.
+2. The app must distinguish 2 different user types: admin Utente, which has access to functionalities 1, 3 and 4, and merchant Utente, who accesses functionalities 3 and 4.
+3. Functionality n.2 doesn't require the user to be authenticated, as it is available to anyone who possess the card number.
 
 
 ### Backend

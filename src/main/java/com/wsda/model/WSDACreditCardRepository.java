@@ -1,6 +1,5 @@
-package com.wsda.entity;
+package com.wsda.model;
 
-import com.wsda.entity.WSDACreditCard;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,1 +1,2 @@
-INSERT INTO wsda_user (age, email, name) VALUES (23, 'emanuelemuzio@hotmail.it', 'Emanuele Muzio');
+INSERT INTO wsda_user (id, age, email, password, name) VALUES (1, 23, 'emanuelemuzio@hotmail.it', '123','Emanuele Muzio');
+INSERT INTO wsda_credit_card(number, balance, wsda_user_id) VALUES  (123, 500, 1);

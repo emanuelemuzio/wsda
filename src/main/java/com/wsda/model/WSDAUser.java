@@ -1,4 +1,4 @@
-package com.wsda.entity;
+package com.wsda.model;
 
 import jakarta.persistence.*;
 import java.util.Objects;
@@ -13,13 +13,23 @@ public class WSDAUser {
     private Integer id;
     private String name;
     private String email;
+    private String password;
     private Integer age;
 
-    public WSDAUser(Integer id, String name, String email, Integer age) {
+    public WSDAUser(Integer id, String name, String email, String password,Integer age) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
         this.age = age;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public WSDAUser(){}
@@ -60,13 +70,13 @@ public class WSDAUser {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        WSDAUser WSDAUser = (WSDAUser) o;
-        return Objects.equals(id, WSDAUser.id) && Objects.equals(name, WSDAUser.name) && Objects.equals(email, WSDAUser.email) && Objects.equals(age, WSDAUser.age);
+        WSDAUser wsdaUser = (WSDAUser) o;
+        return Objects.equals(id, wsdaUser.id) && Objects.equals(name, wsdaUser.name) && Objects.equals(email, wsdaUser.email) && Objects.equals(password, wsdaUser.password) && Objects.equals(age, wsdaUser.age);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, age);
+        return Objects.hash(id, name, email, password, age);
     }
 
     @Override
@@ -75,6 +85,7 @@ public class WSDAUser {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", age=" + age +
                 '}';
     }

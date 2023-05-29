@@ -1,0 +1,47 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <script th:src="jquery-3.7.0.min.js"></script>
+    <script th:src="login.js"></script>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login</title>
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="text-center">
+
+<main class="form-signin">
+    <img class="mb-4" th:src="logo.svg" alt="" width="72" height="57">
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    <div class="form-floating">
+      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <label for="floatingInput">Email address</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+      <label for="floatingPassword">Password</label>
+    </div>
+    <button id="login-btn" class="w-100 btn btn-lg btn-primary mb-2">Sign in</button>
+    <a class="w-100 btn btn-lg btn-secondary" href="/">Home</a>
+    <div id="login-response-err" style="display: none" class="my-4 alert alert-danger" >Wrong credentials!</div>
+</main>
+</body>
+<link th:href="login.css" rel="stylesheet">
+<link rel="stylesheet" th:href="bootstrap.min.css">
+<script th:src="bootstrap.min.js"></script>
+</html>
