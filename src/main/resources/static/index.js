@@ -12,21 +12,25 @@ $(document).ready(function(){
 
                 $.ajax({
                     method: "POST",
-                    url: "get_card_balance",
+                    url: "http://localhost:9000/api/get_card_balance",
                     data: {
-                        "CardNumber" : credit_card_number
+                        "cardNumber" : credit_card_number
                     }
                 })
                     .done(function(result){
-                        console.log(result)
-                        if(result.balance < 0){
-                            credit_card_response_succ.css("display","none")
-                            credit_card_response_err.css("display","block")
-                        }
-                        else{
-                            credit_card_response_succ.css("display","block")
-                            credit_card_response_err.css("display","none")
-                            credit_card_response_succ.text("Card's balance is: " + result.balance + " €");
+                        switch(result.apiStatusCode){
+                            case 404:
+                                credit_card_response_succ.css("display","none")
+                                credit_card_response_err.css("display","block")
+                                credit_card_response_err.text(result.apiMessage);
+                                break;
+                            case 200:
+                                credit_card_response_err.css("display","none")
+                                credit_card_response_succ.css("display","block")
+                                credit_card_response_succ.text(result.apiMessage);
+                                break;
+                            default:
+                                break;
                         }
                     })
         }
