@@ -1,16 +1,12 @@
 package com.wsda.controller;
 
-import com.wsda.model.WSDATokenRepository;
-import jakarta.servlet.http.HttpServletResponse;
+import com.wsda.repository.WSDATokenRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.wsda.model.*;
-
-import java.rmi.server.ExportException;
-import java.util.List;
 
 @SpringBootApplication
 @Controller
@@ -24,18 +20,29 @@ public class FrontEndController {
         this.token_repo = token_repo;
     }
 
+    @Value("${server.host}")
+    private String host;
+
+    @Value("${server.port}")
+    private Integer port;
+
+    private String path = this.host + "/" + this.port;
+
     @GetMapping("/")
-    String index(){
+    String index(Model model){
+        model.addAttribute("path", path);
         return "index";
     }
 
     @GetMapping("/login")
-    String login(){
+    String login(Model model){
+        model.addAttribute("path", path);
         return "login";
     }
 
-    @GetMapping("/backend/home")
-    String backendHome(){
-        return "backend-home";
+    @GetMapping("/dashboard")
+    String dashboard(Model model){
+        model.addAttribute("path", path);
+        return "dashboard";
     }
 }

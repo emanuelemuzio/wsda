@@ -47,12 +47,13 @@ Now that the few requirements have been listed, let's proceed to the project's s
 
 * Java 17
 * Spring Boot 3.1.0
-* Maven 4.0
+* Maven 4.0 for dependencies 
 * Apache Tomcat 10 (Embedded web server in Spring Boot)
-* PostgreSQL (also loaded into Spring Boot dependencies)
+* PostgreSQL 
 
 ### Tools, dependencies and external libs
 
+* Hibernate for managing JPA (Jakarta Persistance API)
 * [initializr](https://github.com/spring-io/initializr) for initializing the project structure
 * IntelliJ Idea Ultimate (which already integrates the initializr)
 * [Jackson](https://github.com/FasterXML/jackson) for handling JSONs in Java

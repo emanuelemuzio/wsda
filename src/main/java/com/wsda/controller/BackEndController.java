@@ -1,33 +1,47 @@
 package com.wsda.controller;
 
-import com.sun.net.httpserver.HttpsServer;
 import com.wsda.model.*;
+import com.wsda.repository.*;
 import jakarta.servlet.http.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.persistence.EntityManager;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import com.wsda.common.Auth.*;
+import com.wsda.common.CardBalance.*;
+import com.wsda.service.*;
 
-@SpringBootApplication
+@RequestMapping("/api")
 @RestController
 public class BackEndController {
-    private final WSDACreditCardRepository credit_card_repo;
-    private final WSDAUserRepository user_repo;
-    private final WSDATokenRepository token_repo;
     private static final SecureRandom secureRandom = new SecureRandom();
     private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
     private static final Base64.Decoder base64Decoder = Base64.getDecoder();
+    private final WSDACreditCardRepository WSDACreditCardRepository;
+    private final WSDAUserRepository WSDAUserRepository;
+    private final WSDATokenRepository WSDATokenRepository;
+    private final WSDAService WSDAService;
+    private EntityManager entityManager;
 
-    BackEndController(WSDACreditCardRepository credit_card_repo, WSDAUserRepository user_repo, WSDATokenRepository token_repo){
-        this.credit_card_repo = credit_card_repo;
-        this.user_repo = user_repo;
-        this.token_repo = token_repo;
+    @Autowired
+    BackEndController(
+            EntityManager entityManager,
+            WSDACreditCardRepository WSDACreditCardRepository,
+            WSDAUserRepository WSDAUserRepository,
+            WSDATokenRepository WSDATokenRepository,
+            WSDAService WSDAService
+    ){
+        this.entityManager = entityManager;
+        this.WSDACreditCardRepository = WSDACreditCardRepository;
+        this.WSDAUserRepository = WSDAUserRepository;
+        this.WSDATokenRepository = WSDATokenRepository;
+        this.WSDAService = WSDAService;
     }
 
     public static void main(String[] args){
@@ -36,14 +50,15 @@ public class BackEndController {
 
     @PostMapping("/get_card_balance")
     CardBalanceResponse getCardBalance(CardBalanceRequest request){
-        List<WSDACreditCard> credit_card_list = credit_card_repo.findWSDACreditCardByNumber(request.CardNumber);
+        String cardNumber = request.cardNumber();
+        List<WSDACreditCard> credit_card_list = WSDAService.getCreditCards(null, cardNumber, null);
         if(!(credit_card_list.isEmpty())){
             WSDACreditCard credit_card = credit_card_list.get(0);
             Integer balance = credit_card.getBalance();
-            return new CardBalanceResponse(balance);
+            return new CardBalanceResponse(200, "The card's balance is : " + balance + "€");
         }
         else{
-            return new CardBalanceResponse(-1);
+            return new CardBalanceResponse(404, "Credit card not found!");
         }
     }
 
@@ -55,7 +70,7 @@ public class BackEndController {
         if(login_credentials.length == 0){
             return new LoginResponse(false, null);
         }
-        List<WSDAUser> result = this.user_repo.findOneByEmailAndPassword(login_credentials[0], login_credentials[1]);
+        List<WSDAUser> result = WSDAUserRepository.findOneByEmailAndPassword(login_credentials[0], login_credentials[1]);
         if(result.isEmpty()){
             return new LoginResponse(false, null);
         }
@@ -75,25 +90,22 @@ public class BackEndController {
             token_entity.setLoggedIn(now);
             token_entity.setExpiration(tomorrow);
             token_entity.setToken(token);
-            this.token_repo.save(token_entity);
+            WSDATokenRepository.save(token_entity);
             return new LoginResponse(true, token_entity.getToken());
         }
     }
 
     @PostMapping ("/auth")
     AuthResponse auth(AuthRequest request){
-        String token = request.token;
-        List<WSDAToken> wsda_token = this.token_repo.findWSDATokenByTokenAndLoggedOutIsNull(token);
-        return new AuthResponse(!wsda_token.isEmpty());
+        String token = request.token();
+        List<WSDAToken> wsda_token = WSDATokenRepository.findWSDATokenByTokenAndLoggedOutIsNull(token);
+        if(wsda_token.isEmpty()){
+            return new AuthResponse(403, "Unauthorized user");
+        }
+        else{
+            return new AuthResponse(200, "Authorized user");
+        }
     }
-
-    record AuthRequest(@RequestBody String token){}
-
-    record AuthResponse(@ResponseBody Boolean login){}
-
-    record CardBalanceRequest(@RequestBody String CardNumber){}
-
-    record CardBalanceResponse(@ResponseBody Integer balance){}
 
     record LoginRequest(@RequestBody String credentials){}
     record LoginResponse(@ResponseBody Boolean login, String token){}
