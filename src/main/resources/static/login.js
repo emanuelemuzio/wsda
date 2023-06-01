@@ -23,34 +23,44 @@ const loginFunction = async () => {
 
     $.ajax({
         method: "POST",
-        url: "login",
+        url: baseUrl + "api/login",
         data: {
             "credentials" : credentials
         }
     })
         .done(function(result){
-            if(result.token != null && result.login === true){
-                document.cookie = "token=" + result.token
-                location.href = "http://localhost:9000/dashboard"
-            }
-            else{
-                $("#login-response-err").css("display","block")
+            switch(result.apiStatusCode){
+                case 200:
+                    document.cookie = "token=" + result.apiMessage
+                    location.href = baseUrl + "dashboard"
+                    break;
+                default:
+                    $("#login-response-err").css("display","block")
+                    $("#login-response-err").text(result.apiMessage)
+                    break;
             }
         })
 }
 
 const authCall = async () => {
     const token = getCookie("token")
+
+    console.log(token)
+
     $.ajax({
         method: "POST",
-        url: "auth",
+        url: baseUrl + "api/auth",
         data: {
             "token" : token
         }
     })
         .done(function(result){
-            if(result.login === true){
-                location.href = "http://localhost:9000/dashboard"
+            switch(result.apiStatusCode){
+                case 200:
+                    location.href = baseUrl + "dashboard";
+                    break;
+                default:
+                    break;
             }
         })
 }

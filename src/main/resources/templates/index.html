@@ -10,7 +10,7 @@
 <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-            <img class="bi me-2" th:src="logo.svg">
+            <img class="bi me-2" th:src="${path} + logo.svg">
         </a>
     </header>
 </div>
@@ -20,7 +20,7 @@
         <p class="lead mb-4 fs-2">Quickly handle the pre-paid cards sold in your own shop!</p>
         <p class="lead mb-4">You can also check the balance of purchased cards if you possess the card's code</p>
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <a href="${path}/login" class="btn btn-primary btn-lg px-4 gap-3">Login</a>
+            <a th:href="${path} + login" class="btn btn-primary btn-lg px-4 gap-3">Login</a>
             <button id="check-balance-btn" type="button" class="btn btn-outline-secondary btn-lg px-4">Check balance</button>
         </div>
     </div>
@@ -33,8 +33,11 @@
     </div>
 </div>
 </body>
-<link rel="stylesheet" th:href="bootstrap.min.css">
-<script th:src="jquery-3.7.0.min.js"></script>
-<script th:src="bootstrap.min.js"></script>
-<script th:src="index.js"></script>
+<script th:inline="javascript">
+    const baseUrl = /*[[${path}]]*/ ""
+</script>
+<link rel="stylesheet" th:href="${path} + bootstrap.min.css">
+<script th:src="${path} + jquery-3.7.0.min.js"></script>
+<script th:src="${path} + bootstrap.min.js"></script>
+<script th:src="${path} + index.js"></script>
 </html>

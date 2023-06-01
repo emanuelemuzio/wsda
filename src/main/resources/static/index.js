@@ -12,7 +12,7 @@ $(document).ready(function(){
 
                 $.ajax({
                     method: "POST",
-                    url: "http://localhost:9000/api/get_card_balance",
+                    url: baseUrl + "api/get_card_balance",
                     data: {
                         "cardNumber" : credit_card_number
                     }

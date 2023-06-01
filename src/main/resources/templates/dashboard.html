@@ -1,10 +1,14 @@
 <!doctype html>
-<html lang="en">
+<html xmlns:th="https://www.thymeleaf.org">
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js" integrity="sha512-24XP4a9KVoIinPFUbcnjIjAjtS59PUoxQj3GNVpWc86bCqPuy3YxAcxJrxFCxXe4GHtAumCbO2Ze2bddtuxaRw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script th:inline="javascript">
+        const baseUrl = /*[[${path}]]*/ ""
+    </script>
     <script th:src="@{/jquery-3.7.0.min.js}"></script>
-    <script th:src="@{/backend.js}"></script>
+    <script th:src="@{/dashboard.js}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard Template · Bootstrap v5.1</title>
+    <title>Dashboard</title>
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -23,7 +27,7 @@
 
 
     <!-- Custom styles for this template -->
-    <link th:href="@{/dashboard.css}" rel="stylesheet">
+    <link th:href="${path} + dashboard.css" rel="stylesheet">
 </head>
 <body>
 
@@ -33,9 +37,9 @@
             <div class="position-sticky pt-3">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
+                        <a th:class="nav-link" aria-current="page" th:href="${path}">
                             <span data-feather="home"></span>
-                            Dashboard
+                            Home
                         </a>
                     </li>
                     <li class="nav-item">
@@ -83,38 +87,21 @@
                             Current month
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Last quarter
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Social engagement
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Year-end sale
-                        </a>
-                    </li>
                 </ul>
             </div>
         </nav>
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Dashboard</h1>
+                <h1>Credit cards list</h1>
             </div>
+            <div id="card-container" class="d-flex justify-content-evenly flex-wrap"></div>
         </main>
     </div>
 </div>
 
 
-<link rel="stylesheet" th:href="@{/bootstrap.min.css}">
-<script th:src="@{/bootstrap.min.js}"></script>
+<link rel="stylesheet" th:href="${path} + bootstrap.min.css">
+<script th:src="${path} + bootstrap.min.js"></script>
 </body>
 </html>

@@ -2,6 +2,8 @@ package com.wsda.model;
 
 import jakarta.persistence.*;
 import java.util.Objects;
+import java.util.Set;
+
 @Entity
 @Table(name = "wsda_user")
 public class WSDAUser {
@@ -16,23 +18,10 @@ public class WSDAUser {
     private String password;
     private Integer age;
 
-    public WSDAUser(Integer id, String name, String email, String password,Integer age) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.age = age;
-    }
+    @ManyToOne
+    @JoinColumn(name = "wsda_role_id", referencedColumnName = "id")
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public WSDAUser(){}
+    private WSDARole wsda_role;
 
     public Integer getId() {
         return id;
@@ -50,12 +39,28 @@ public class WSDAUser {
         this.name = name;
     }
 
+    public WSDARole getWSDARole() {
+        return wsda_role;
+    }
+
+    public void setWSDARole(WSDARole wsda_role) {
+        this.wsda_role = wsda_role;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Integer getAge() {
@@ -71,12 +76,12 @@ public class WSDAUser {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WSDAUser wsdaUser = (WSDAUser) o;
-        return Objects.equals(id, wsdaUser.id) && Objects.equals(name, wsdaUser.name) && Objects.equals(email, wsdaUser.email) && Objects.equals(password, wsdaUser.password) && Objects.equals(age, wsdaUser.age);
+        return Objects.equals(id, wsdaUser.id) && Objects.equals(name, wsdaUser.name) && Objects.equals(email, wsdaUser.email) && Objects.equals(password, wsdaUser.password) && Objects.equals(age, wsdaUser.age) && Objects.equals(wsda_role, wsdaUser.wsda_role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, password, age);
+        return Objects.hash(id, name, email, password, age, wsda_role);
     }
 
     @Override
@@ -87,6 +92,7 @@ public class WSDAUser {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", age=" + age +
+                ", wsda_role=" + wsda_role +
                 '}';
     }
 }
