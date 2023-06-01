@@ -10,7 +10,7 @@
 <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-            <img class="bi me-2" th:src="${path} + logo.svg">
+            <img class="bi me-2" th:src="${assets} + logo.svg">
         </a>
     </header>
 </div>
@@ -36,8 +36,8 @@
 <script th:inline="javascript">
     const baseUrl = /*[[${path}]]*/ ""
 </script>
-<link rel="stylesheet" th:href="${path} + bootstrap.min.css">
-<script th:src="${path} + jquery-3.7.0.min.js"></script>
-<script th:src="${path} + bootstrap.min.js"></script>
-<script th:src="${path} + index.js"></script>
+<link rel="stylesheet" th:href="${css} + bootstrap.min.css">
+<script th:src="${js} +jquery-3.7.0.min.js"></script>
+<script th:src="${js} + bootstrap.min.js"></script>
+<script th:src="${js} + index.js"></script>
 </html>

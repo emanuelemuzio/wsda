@@ -1,40 +1,3 @@
-function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-
-const authCall = async () => {
-    const token = getCookie("token")
-
-    $.ajax({
-        method: "POST",
-        url: baseUrl + "api/auth",
-        data: {
-            "token" : token
-        }
-    })
-        .done(function(result){
-            switch(result.apiStatusCode){
-                case 200:
-                    break;
-                default:
-                    location.href = baseUrl + "login";
-                    break;
-            }
-        })
-}
-
 const createCreditCardList = async (cardContainer) => {
     const token = getCookie("token")
 
@@ -48,7 +11,6 @@ const createCreditCardList = async (cardContainer) => {
         .done(function(result){
             switch(result.apiStatusCode){
                 case 200:
-                    console.log(result)
                     result.apiMessage.forEach(c => cardContainer.append(createCard(c)))
                     break;
                 default:
@@ -56,13 +18,6 @@ const createCreditCardList = async (cardContainer) => {
             }
         })
 }
-
-authCall();
-
-$(document).ready(async function() {
-    const cardContainer = $("#card-container")
-    await createCreditCardList(cardContainer)
-})
 
 const createCard = (cardData) => {
     const cardDiv = $("<div></div>")
@@ -89,3 +44,10 @@ const createCard = (cardData) => {
 
     return cardDiv
 }
+
+authCall();
+
+$(document).ready(async function() {
+    const cardContainer = $("#card-container")
+    await createCreditCardList(cardContainer)
+})

@@ -17,29 +17,50 @@ public class FrontEndController {
     }
 
     public String path;
+    public static String cssPath;
+    public static String jsPath;
+    public static String assetsPath;
     @Autowired
     FrontEndController(
             @Value("${spring.base}") String path
     ){
         this.path = path;
+        cssPath = path + "css/";
+        jsPath = path + "js/";
+        assetsPath = path + "assets/";
+    }
+
+    private void initModel(Model m){
+        m.addAttribute("path", this.path);
+        m.addAttribute("css", cssPath);
+        m.addAttribute("js", jsPath);
+        m.addAttribute("assets", assetsPath);
     }
 
     @GetMapping("/")
     String index(Model model){
-        model.addAttribute("path", this.path);
+        initModel(model);
         return "index";
     }
 
     @GetMapping("/login")
     String login(Model model){
-        model.addAttribute("path", this.path);
+        initModel(model);
         return "login";
     }
 
     @GetMapping("/dashboard")
     String dashboard(Model model){
-        model.addAttribute("path", this.path);
+        initModel(model);
+        model.addAttribute("page", "dashboard");
         return "dashboard";
+    }
+
+    @GetMapping("/merchant/new")
+    String newMerchant(Model model){
+        initModel(model);
+        model.addAttribute("page", "merchant-new");
+        return "merchant/new";
     }
 
 //    @GetMapping("**")
