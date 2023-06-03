@@ -11,6 +11,7 @@ public class WSDACreditCard {
     )
 
     private Integer id;
+    @Column(unique = true)
     private String number;
     private Integer balance;
 

@@ -11,13 +11,14 @@ public class WSDAUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    @Column(unique = true)
     private String email;
     private String password;
 
     @ManyToOne
     @JoinColumn(name = "wsda_role_id", referencedColumnName = "id")
 
-    private WSDARole wsda_role;
+    private WSDARole wsdaRole;
 
     public Integer getId() {
         return id;
@@ -36,11 +37,11 @@ public class WSDAUser {
     }
 
     public WSDARole getWSDARole() {
-        return wsda_role;
+        return wsdaRole;
     }
 
-    public void setWSDARole(WSDARole wsda_role) {
-        this.wsda_role = wsda_role;
+    public void setWSDARole(WSDARole wsdaRole) {
+        this.wsdaRole = wsdaRole;
     }
 
     public String getEmail() {
@@ -64,12 +65,12 @@ public class WSDAUser {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WSDAUser wsdaUser = (WSDAUser) o;
-        return Objects.equals(id, wsdaUser.id) && Objects.equals(name, wsdaUser.name) && Objects.equals(email, wsdaUser.email) && Objects.equals(password, wsdaUser.password) && Objects.equals(wsda_role, wsdaUser.wsda_role);
+        return Objects.equals(id, wsdaUser.id) && Objects.equals(name, wsdaUser.name) && Objects.equals(email, wsdaUser.email) && Objects.equals(password, wsdaUser.password) && Objects.equals(wsdaRole, wsdaUser.wsdaRole);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, password, wsda_role);
+        return Objects.hash(id, name, email, password, wsdaRole);
     }
 
     @Override
@@ -79,7 +80,7 @@ public class WSDAUser {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", wsda_role=" + wsda_role +
+                ", wsda_role=" + wsdaRole +
                 '}';
     }
 }

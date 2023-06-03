@@ -12,6 +12,7 @@ public class WSDAToken {
             strategy = GenerationType.AUTO
     )
     private Integer id;
+    @Column(unique = true)
     private String token;
     private Date loggedIn;
     private Date loggedOut;

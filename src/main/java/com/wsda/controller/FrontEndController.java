@@ -63,6 +63,13 @@ public class FrontEndController {
         return "merchant/new";
     }
 
+    @GetMapping("/merchant/list")
+    String merchantsList(Model model){
+        initModel(model);
+        model.addAttribute("page", "merchant-list");
+        return "merchant/list";
+    }
+
 //    @GetMapping("**")
 //    String any(){
 //

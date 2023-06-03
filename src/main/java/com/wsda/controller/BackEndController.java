@@ -1,6 +1,7 @@
 package com.wsda.controller;
 
 import com.wsda.common.GetCreditCardList.*;
+import com.wsda.common.GetMerchantsList.*;
 import com.wsda.common.Logout.*;
 import com.wsda.common.MerchantNew.*;
 import com.wsda.model.*;
@@ -8,7 +9,10 @@ import com.wsda.repository.*;
 import jakarta.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
+
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.*;
@@ -64,6 +68,27 @@ public class BackEndController {
         else{
             return new GetCardBalanceResponse(404, "Credit card not found!");
         }
+    }
+
+    @PostMapping("/merchant/list")
+    GetMerchantsListResponse creditCardList(GetMerchantsListRequest request){
+        String token = request.token();
+        if(!WSDAService.validateToken(token)){
+            return new GetMerchantsListResponse(401, "Unauthorized");
+        }
+        WSDARole role = WSDARoleRepository.findWSDARoleByRole(this.merchantRole);
+        List<WSDAUser> merchantsList = WSDAUserRepository.findWSDAUsersBywsdaRole(role);
+
+        ArrayList formattedResponse = new ArrayList();
+
+        for(WSDAUser u : merchantsList){
+            HashMap<String, Object> record = new HashMap<>();
+            record.put("name", u.getName());
+            record.put("email", u.getEmail());
+            formattedResponse.add(record);
+        }
+
+        return new GetMerchantsListResponse(200, formattedResponse);
     }
 
     @PostMapping("/get_credit_card_list")
@@ -165,18 +190,23 @@ public class BackEndController {
             return new MerchantNewResponse(401, "Unauthorized");
         }
 
-        WSDAUser user = new WSDAUser();
-        WSDARole role = WSDARoleRepository.findWSDARoleByRole("ROLE_MERCHANT");
+        try{
+            WSDAUser user = new WSDAUser();
+            WSDARole role = WSDARoleRepository.findWSDARoleByRole(this.merchantRole);
 
-        user.setName(name + " " + surname);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setWSDARole(role);
-        WSDAUserRepository.save(user);
+            user.setName(name + " " + surname);
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setWSDARole(role);
 
-        return new MerchantNewResponse(200, "Success");
+            WSDAUserRepository.save(user);
+        }
+        catch(DataIntegrityViolationException e){
+            return new MerchantNewResponse(500, "Chosen email is unavailable");
+        }
+
+        return new MerchantNewResponse(200, "Merchant created, returning to dashboard");
     }
-
 
     protected String generateNewToken(){
         byte[] randomBytes = new byte[24];

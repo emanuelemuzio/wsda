@@ -14,6 +14,7 @@ public class WSDARole {
     )
 
     private Integer id;
+    @Column(unique = true)
     private String role;
 
     public Integer getId() {

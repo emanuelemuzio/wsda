@@ -60,8 +60,6 @@ authCall(token)
 
 
 $(window).on("load", function(){
-    console.log($("#logout-button"))
-
     $("#logout-button").on("click",function(){
         console.log("logout")
         logOut()
