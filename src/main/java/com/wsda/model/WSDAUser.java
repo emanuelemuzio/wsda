@@ -8,15 +8,11 @@ import java.util.Set;
 @Table(name = "wsda_user")
 public class WSDAUser {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String email;
     private String password;
-    private Integer age;
 
     @ManyToOne
     @JoinColumn(name = "wsda_role_id", referencedColumnName = "id")
@@ -63,25 +59,17 @@ public class WSDAUser {
         this.password = password;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WSDAUser wsdaUser = (WSDAUser) o;
-        return Objects.equals(id, wsdaUser.id) && Objects.equals(name, wsdaUser.name) && Objects.equals(email, wsdaUser.email) && Objects.equals(password, wsdaUser.password) && Objects.equals(age, wsdaUser.age) && Objects.equals(wsda_role, wsdaUser.wsda_role);
+        return Objects.equals(id, wsdaUser.id) && Objects.equals(name, wsdaUser.name) && Objects.equals(email, wsdaUser.email) && Objects.equals(password, wsdaUser.password) && Objects.equals(wsda_role, wsdaUser.wsda_role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, password, age, wsda_role);
+        return Objects.hash(id, name, email, password, wsda_role);
     }
 
     @Override
@@ -91,7 +79,6 @@ public class WSDAUser {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", age=" + age +
                 ", wsda_role=" + wsda_role +
                 '}';
     }

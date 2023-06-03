@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="merchant-new">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="mx-auto">New merchant form</h1>
+  </div>
+  <form class="needs-validation" id="merchant-new-form">
+    <div class="row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-4">
+        <label for="name" class="form-label">First name</label>
+        <input name="name" type="text" class="form-control" id="name" placeholder="" value="" required>
+      </div>
+      <div class="col-sm-4">
+        <label for="surname" class="form-label">Surname</label>
+        <input name="surname" type="text" class="form-control" id="surname" placeholder="" value="" required>
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-4">
+        <label for="email" class="form-label">Email</label>
+        <input name="email" type="email" class="form-control" id="email" placeholder="" value="" required>
+      </div>
+      <div class="col-sm-4">
+        <label for="password" class="form-label">Password</label>
+        <input name="password" type="password" class="form-control" id="password" placeholder="" value="" required>
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
+    <hr class="my-4">
+    <div class="text-center">
+      <button class="w-25 btn btn-primary btn-lg text-center" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

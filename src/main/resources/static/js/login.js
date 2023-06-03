@@ -45,8 +45,6 @@ const loginFunction = async () => {
 const authCall = async () => {
     const token = getCookie("token")
 
-    console.log(token)
-
     $.ajax({
         method: "POST",
         url: baseUrl + "api/auth",
@@ -68,8 +66,13 @@ const authCall = async () => {
 authCall();
 
 $(document).ready(function(){
+    $("#login-form").on("submit", function(f){
+        f.preventDefault();
+        loginFunction()
+    })
+});
 
-    $("#login-btn").on("click", loginFunction())
+$(window).on('load',function(){
     $(document).on('keypress', function(e){
         if(e.which == 13){
             loginFunction()

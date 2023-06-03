@@ -68,6 +68,23 @@ public class WSDAService {
         return result;
     }
 
+    public Boolean validateToken(String token){
+        String sql =
+                "SELECT t " +
+                        "FROM WSDAToken t " +
+                        "WHERE t.loggedOut IS NULL ";
+
+        HashMap<String, Object> params = new HashMap<String, Object>();
+
+        TypedQuery<WSDAToken> query = entityManager.createQuery(sql, WSDAToken.class);
+
+        setParams(params, query);
+
+        List<WSDAToken> result = query.getResultList();
+
+        return !result.isEmpty();
+    }
+
     public void setParams(HashMap<String, Object>params, TypedQuery q){
         for(Map.Entry<String, Object> entry : params.entrySet()){
             q.setParameter(entry.getKey(), entry.getValue());

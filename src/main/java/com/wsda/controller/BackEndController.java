@@ -1,14 +1,14 @@
 package com.wsda.controller;
 
-import com.wsda.common.GetCreditCardList.GetCreditCardListRequest;
-import com.wsda.common.GetCreditCardList.GetCreditCardListResponse;
+import com.wsda.common.GetCreditCardList.*;
+import com.wsda.common.Logout.*;
+import com.wsda.common.MerchantNew.*;
 import com.wsda.model.*;
 import com.wsda.repository.*;
 import jakarta.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.web.bind.annotation.*;
-import jakarta.persistence.EntityManager;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.*;
@@ -28,21 +28,21 @@ public class BackEndController {
     private final WSDAUserRepository WSDAUserRepository;
     private final WSDATokenRepository WSDATokenRepository;
     private final WSDAService WSDAService;
-    private EntityManager entityManager;
+    private final WSDARoleRepository WSDARoleRepository;
     private String adminRole;
     private String merchantRole;
     @Autowired
     BackEndController(
-            EntityManager entityManager,
             WSDACreditCardRepository WSDACreditCardRepository,
             WSDAUserRepository WSDAUserRepository,
             WSDATokenRepository WSDATokenRepository,
+            WSDARoleRepository WSDARoleRepository,
             WSDAService WSDAService
     ){
-        this.entityManager = entityManager;
         this.WSDACreditCardRepository = WSDACreditCardRepository;
         this.WSDAUserRepository = WSDAUserRepository;
         this.WSDATokenRepository = WSDATokenRepository;
+        this.WSDARoleRepository = WSDARoleRepository;
         this.WSDAService = WSDAService;
         this.adminRole = "ROLE_ADMIN";
         this.merchantRole = "ROLE_MERCHANT";
@@ -69,6 +69,9 @@ public class BackEndController {
     @PostMapping("/get_credit_card_list")
     GetCreditCardListResponse creditCardList(GetCreditCardListRequest request){
         String token = request.token();
+        if(!WSDAService.validateToken(token)){
+            return new GetCreditCardListResponse(401, "Unauthorized");
+        }
         WSDAUser user = WSDAService.getUserFromToken(token);
         WSDAUser userOwner = null;
         if(user.getWSDARole().getRole().equals(this.merchantRole)){
@@ -123,6 +126,21 @@ public class BackEndController {
         }
     }
 
+    @PostMapping("/logout")
+    LogoutResponse logout(LogoutRequest request){
+        String token = request.token();
+        List<WSDAToken> activeTokenRes = WSDATokenRepository.findWSDATokenByTokenAndLoggedOutIsNull(token);
+        if((activeTokenRes.isEmpty())){
+           return new LogoutResponse(404, "Token not found");
+        }
+        WSDAToken activeToken = activeTokenRes.get(0);
+        Date now = new Date();
+        activeToken.setLoggedOut(now);
+        WSDATokenRepository.save(activeToken);
+
+        return new LogoutResponse(200, "SUCCESS");
+    }
+
     @PostMapping ("/auth")
     AuthResponse auth(AuthRequest request){
         String token = request.token();
@@ -135,9 +153,35 @@ public class BackEndController {
         }
     }
 
+    @PostMapping("/merchant/new")
+    MerchantNewResponse merchantNew(MerchantNewRequest request){
+        String name = request.name();
+        String surname = request.surname();
+        String email = request.email();
+        String password = request.password();
+        String token = request.token();
+
+        if(!WSDAService.validateToken(token)){
+            return new MerchantNewResponse(401, "Unauthorized");
+        }
+
+        WSDAUser user = new WSDAUser();
+        WSDARole role = WSDARoleRepository.findWSDARoleByRole("ROLE_MERCHANT");
+
+        user.setName(name + " " + surname);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setWSDARole(role);
+        WSDAUserRepository.save(user);
+
+        return new MerchantNewResponse(200, "Success");
+    }
+
+
     protected String generateNewToken(){
         byte[] randomBytes = new byte[24];
         secureRandom.nextBytes(randomBytes);
         return base64Encoder.encodeToString(randomBytes);
     }
+
 }

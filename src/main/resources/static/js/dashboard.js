@@ -13,7 +13,11 @@ const createCreditCardList = async (cardContainer) => {
                 case 200:
                     result.apiMessage.forEach(c => cardContainer.append(createCard(c)))
                     break;
+                case 401:
+                    location.href = baseUrl + "login";
+                    break;
                 default:
+                    console.log(result)
                     break;
             }
         })
@@ -44,8 +48,6 @@ const createCard = (cardData) => {
 
     return cardDiv
 }
-
-authCall();
 
 $(document).ready(async function() {
     const cardContainer = $("#card-container")

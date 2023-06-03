@@ -9,7 +9,7 @@ import java.util.Objects;
 public class WSDAToken {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.IDENTITY
+            strategy = GenerationType.AUTO
     )
     private Integer id;
     private String token;

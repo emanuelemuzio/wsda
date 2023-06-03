@@ -13,8 +13,7 @@ const getCookie = (cname) => {
     }
     return "";
 }
-const authCall = async () => {
-    const token = getCookie("token")
+const authCall = async (token) => {
 
     $.ajax({
         method: "POST",
@@ -34,4 +33,38 @@ const authCall = async () => {
         })
 }
 
-$(`#${page}-li`).addClass("active")
+const logOut = () => {
+    const token = getCookie("token")
+
+    $.ajax({
+        method: "POST",
+        url: baseUrl + "api/logout",
+        data: {
+            "token" : token
+        }
+    })
+        .done(function(result){
+            switch(result.apiStatusCode){
+                case 200:
+                    location.href = baseUrl + "login";
+                    break;
+                default:
+                    console.log(result)
+                    break;
+            }
+        })
+}
+
+const token = getCookie("token")
+authCall(token)
+
+
+$(window).on("load", function(){
+    console.log($("#logout-button"))
+
+    $("#logout-button").on("click",function(){
+        console.log("logout")
+        logOut()
+    })
+    $(`#${page}-li`).addClass("active")
+})

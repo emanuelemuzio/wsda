@@ -8,4 +8,5 @@ import java.util.List;
 
 @Component
 public interface WSDARoleRepository extends JpaRepository<WSDARole, Integer>{
+    WSDARole findWSDARoleByRole(String role);
 }
