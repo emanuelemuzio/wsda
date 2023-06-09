@@ -34,35 +34,20 @@ const authCall = async (token) => {
 }
 
 const logOut = () => {
-    const token = getCookie("token")
-
     $.ajax({
         method: "POST",
-        url: baseUrl + "api/logout",
-        data: {
-            "token" : token
-        }
+        url: baseUrl + "/logout"
     })
-        .done(function(result){
-            switch(result.apiStatusCode){
-                case 200:
-                    location.href = baseUrl + "login";
-                    break;
-                default:
-                    console.log(result)
-                    break;
-            }
-        })
 }
 
 const token = getCookie("token")
-authCall(token)
+// authCall(token)
 
 
 $(window).on("load", function(){
     $("#logout-button").on("click",function(){
         console.log("logout")
-        logOut()
+        // logOut()
     })
     $(`#${page}-li`).addClass("active")
 })

@@ -63,19 +63,19 @@ const authCall = async () => {
         })
 }
 
-authCall();
+// authCall();
 
 $(document).ready(function(){
     $("#login-form").on("submit", function(f){
-        f.preventDefault();
-        loginFunction()
+        // f.preventDefault();
+        // loginFunction()
     })
 });
 
 $(window).on('load',function(){
     $(document).on('keypress', function(e){
         if(e.which == 13){
-            loginFunction()
+            // loginFunction()
         }
     })
 });

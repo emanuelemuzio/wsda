@@ -7,6 +7,12 @@ Documentation for the *Web Systems Design and Architecture* uni project.
 ## Functional Requirements
 
 The application must be hable to simulate the handling of pre-paid credit cards.  
+The application will differentiate 3 user types:
+
+1. Admin (only one for the entire project)  
+2. Merchant (one store has many merchants)  
+3. Credit card owner  
+
 The required functionalities are:
 
 1. Creating new credit cards
@@ -14,12 +20,26 @@ The required functionalities are:
 3. Simulate a purchase
 4. Simulate a recharge
 
+Everyone can check a card's balance given the number.  
+
+After the login:
+
+1. A merchant can make a charge or recharge a card given the number
+2. An admin can create a new card and block/unblocka a card given the number
+
+Optional:
+
+1. A merchant can generate a report containing the past transactions.
+2. An admin can disable or enable merchants
+3. An admin can generate reports with various filters
+4. A card owner can see the latest transactions and generate a report
+
 ## Technical Requirements
 
 ### Architecture
 
 1. Application data must be stored in a relational DB (MySQL is fine)
-2. The app must distinguish 2 different user types: admin Utente, which has access to functionalities 1, 3 and 4, and merchant Utente, who accesses functionalities 3 and 4.
+2. The app must distinguish 2 different user types: Merchant User, which has access to functionalities 3 and 4, and Admin User, who accesses functionalities 1, 3 and 4.
 3. Functionality n.2 doesn't require the user to be authenticated, as it is available to anyone who possess the card number.
 
 
@@ -62,11 +82,3 @@ Now that the few requirements have been listed, let's proceed to the project's s
 * Bootstrap 5.1.3
 * jQuery 3.7.0
 * Thymeleaf template engine
-
-# Da sistemare
-
-* import.sql permette di generare degli utenti di default all'avvio del progetto
-
-
-
-

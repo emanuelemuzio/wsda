@@ -90,7 +90,7 @@ const getMerchantsList = async (listContainer) => {
                     location.href = baseUrl + "login";
                     break;
                 case 500:
-                    console.log(result)
+                    console.log('500 error', result)
                     break;
                 default:
                     console.log(result)
@@ -101,7 +101,7 @@ const getMerchantsList = async (listContainer) => {
 
 $(document).ready(async function() {
     const merchantNewForm = $("#merchant-new-form")
-    const merchantsListContainer = $("merchant-list-container")
+    const merchantsListContainer = $("#merchant-list-container")
 
     if(merchantNewForm){
         const token = getCookie("token")

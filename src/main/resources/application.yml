@@ -7,18 +7,24 @@ spring:
       name: user
       password: user
   datasource:
-    url: jdbc:postgresql://localhost:5332/wsda
-    username: admin
-    password: admin
+    url: jdbc:mysql://localhost:3306/muzio
+    username: root
+    password: ''
   base: 'http://localhost:9000/'
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
     show-sql: true
   main:
     web-application-type: servlet
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

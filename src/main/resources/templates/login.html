@@ -27,20 +27,19 @@
   </style>
 </head>
 <body class="text-center">
-
 <main class="form-signin">
     <a th:href="${path}"><img class="mb-4" th:src="${assets} + logo.svg" alt="" width="72" height="57"></a>
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-    <form id="login-form">
+    <form id="login-form" th:action="@{/login}" method="post">
         <div class="form-floating">
-          <input type="email" required class="form-control" id="floatingInput" placeholder="name@example.com">
+          <input name="username" type="email" required class="form-control" id="floatingInput" placeholder="name@example.com">
           <label for="floatingInput">Email address</label>
         </div>
         <div class="form-floating">
-          <input type="password" required class="form-control" id="floatingPassword" placeholder="Password">
+          <input name="password" type="password" required class="form-control" id="floatingPassword" placeholder="Password">
           <label for="floatingPassword">Password</label>
         </div>
-        <button id="login-btn" class="w-100 btn btn-lg btn-primary mb-2" type="submit">Sign in</button>
+        <button id="login-btnn" class="w-100 btn btn-lg btn-primary mb-2" type="submit">Sign in</button>
     </form>
     <a class="w-100 btn btn-lg btn-secondary" th:href="${path}">Home</a>
     <div id="login-response-err" style="display: none" class="my-4 alert alert-danger" ></div>
