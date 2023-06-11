@@ -42,9 +42,7 @@ public class FrontEndController {
     public static String jsPath;
     public static String assetsPath;
     @Autowired
-    private AppService service;
-    @Autowired
-    private CreditCardRepository creditCardRepository;
+    private AppService appService;
 
     @Autowired
     FrontEndController(
@@ -95,12 +93,19 @@ public class FrontEndController {
     @GetMapping("/merchant/new")
     String newMerchant(Model model){
         initModel(model);
+        User newMerchant =  new User();
+
+        List<Map> storeList = this.appService.getStores();
         model.addAttribute("page", "merchant-new");
+        model.addAttribute("merchant", newMerchant);
+        model.addAttribute("stores",storeList);
         return "merchant/new";
     }
 
     @GetMapping("/merchant/list")
     String merchantsList(Model model){
+
+
         initModel(model);
         model.addAttribute("page", "merchant-list");
         return "merchant/list";
@@ -116,20 +121,22 @@ public class FrontEndController {
     @GetMapping("/credit-card/block")
     String creditCardBlock(Model model){
         initModel(model);
+        model.addAttribute("page", "credit-card-block");
         return "credit-card/block";
     }
 
     @GetMapping("/credit-card/new")
     String creditCardNew(Model model){
-        List<Map> stores = this.service.getStores();
+        List<Map> stores = this.appService.getStores();
 
-        CreditCard lastCreditCard = creditCardRepository.findTopByOrderByIdDesc();
+        CreditCard lastCreditCard = this.appService.getLastCreditCard();
         int zeroes = 4 - lastCreditCard.getId().toString().length();
         String newCardNumber = "5000-1234-5678-" + ("0".repeat(zeroes) + ((Integer)(lastCreditCard.getId() + 1)).toString());
 
         CreditCard creditCard = new CreditCard();
 
         creditCard.setNumber(newCardNumber);
+        creditCard.setEnabled(0);
 
         initModel(model);
         model.addAttribute("page", "credit-card-new");

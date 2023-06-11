@@ -5,12 +5,14 @@ import com.muzio.repository.CreditCardRepository;
 import com.muzio.repository.RoleRepository;
 import com.muzio.repository.StoreRepository;
 import com.muzio.repository.UserRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
+@Getter
 public class AppService {
     @Autowired
     private UserRepository userRepository;
@@ -18,6 +20,8 @@ public class AppService {
     private RoleRepository roleRepository;
     @Autowired
     private StoreRepository storeRepository;
+    @Autowired
+    private CreditCardRepository creditCardRepository;
 
     public List getStores(){
         List<Store> storeEntityList = storeRepository.findByOrderByNameAsc();
@@ -27,6 +31,16 @@ public class AppService {
             storesList.add(storeObj);
         }
         return storesList;
+    }
+
+    public CreditCard getLastCreditCard(){
+        CreditCard lastCreditCard = this.creditCardRepository.findTopByOrderByIdDesc();
+        return lastCreditCard;
+    }
+
+    public Role getRole(String role){
+        Role roleEntity = this.roleRepository.findByName(role);
+        return roleEntity;
     }
 
     public HashMap<String, String> createStoreObject(Store s){
@@ -58,5 +72,15 @@ public class AppService {
         return userObj;
     }
 
+    public void save(User u){
+        this.userRepository.save(u);
+    }
 
+    public void save(CreditCard c){
+        this.creditCardRepository.save(c);
+    }
+
+    public void save(Store s){
+        this.storeRepository.save(s);
+    }
 }
