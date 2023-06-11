@@ -1,93 +1,62 @@
 package com.muzio.service;
 
 import com.muzio.model.*;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
-import org.springframework.security.core.userdetails.User;
+import com.muzio.repository.CreditCardRepository;
+import com.muzio.repository.RoleRepository;
+import com.muzio.repository.StoreRepository;
+import com.muzio.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-@org.springframework.stereotype.Service
+@Service
 public class AppService {
-    private EntityManager entityManager;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private StoreRepository storeRepository;
 
-    public AppService(EntityManager entityManager){
-        this.entityManager = entityManager;
+    public List getStores(){
+        List<Store> storeEntityList = storeRepository.findByOrderByNameAsc();
+        List<Map> storesList = new ArrayList();
+        for(Store s : storeEntityList){
+            HashMap<String, String> storeObj = this.createStoreObject(s);
+            storesList.add(storeObj);
+        }
+        return storesList;
     }
 
-    public void getUserFromToken(String token){
-        String sql = "SELECT t FROM Token t WHERE t.token = :token";
-        TypedQuery<Token> query = entityManager.createQuery(sql, Token.class);
-        query.setParameter("token", token);
+    public HashMap<String, String> createStoreObject(Store s){
+        HashMap<String, String> storeObj = new HashMap<>();
 
-        Token tokenEntity = query.getSingleResult();
-//        return tokenEntity.getUser();
+        storeObj.put("value",s.getId().toString());
+        storeObj.put("label", s.getName());
+
+        return storeObj;
     }
 
-    public List<CreditCard> getCreditCards(
-        Integer id,
-        String number,
-        Integer balance,
-        User userOwner
-    ){
-        String sql =
-                "SELECT wsda_cc " +
-                        "FROM CreditCard wsda_cc " +
-                        "WHERE wsda_cc.id IS NOT NULL ";
-
-        HashMap<String, Object> params = new HashMap<String, Object>();
-
-        if(id != null){
-            sql += " AND wsda_cc.id = :id ";
-            params.put("id", id);
+    public List getCustomers(){
+        Role customerRole = roleRepository.findByName("CUSTOMER");
+        List<User> customersEntityList = userRepository.findByRole(customerRole);
+        List<Map> customersList = new ArrayList();
+        for(User u : customersEntityList){
+            HashMap<String, String> userObj = this.createUserObject(u);
+            customersList.add(userObj);
         }
-
-        if(number != null){
-            sql += "AND wsda_cc.number LIKE :number ";
-            params.put("number", number);
-        }
-
-        if(balance != null){
-            sql += "AND wsda_cc.balance = :balance ";
-            params.put("balance", balance);
-        }
-
-        if(userOwner != null){
-            sql += "AND wsda_cc.wsda_user = :userOwner";
-            params.put("userOwner", userOwner);
-        }
-
-        TypedQuery<CreditCard> query = entityManager.createQuery(sql, CreditCard.class);
-
-        setParams(params, query);
-
-        List<CreditCard> result = query.getResultList();
-
-        return result;
+        return customersList;
     }
 
-    public Boolean validateToken(String token){
-        String sql =
-                "SELECT t " +
-                        "FROM Token t " +
-                        "WHERE t.loggedOut IS NULL ";
+    public HashMap<String, String> createUserObject(User u){
+        HashMap<String, String> userObj = new HashMap<>();
 
-        HashMap<String, Object> params = new HashMap<String, Object>();
+        userObj.put("value",u.getId().toString());
+        userObj.put("label", u.getFirstName() + " " + u.getFirstName());
 
-        TypedQuery<Token> query = entityManager.createQuery(sql, Token.class);
-
-        setParams(params, query);
-
-        List<Token> result = query.getResultList();
-
-        return !result.isEmpty();
+        return userObj;
     }
 
-    public void setParams(HashMap<String, Object>params, TypedQuery q){
-        for(Map.Entry<String, Object> entry : params.entrySet()){
-            q.setParameter(entry.getKey(), entry.getValue());
-        }
-    }
+
 }

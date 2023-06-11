@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" th:href="${css} + bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css} ">
     <meta charset="UTF-8">
     <meta name="viewport">
     <title>Home</title>
@@ -11,7 +11,7 @@
 <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-            <img class="bi me-2" th:src="${assets} + logo.svg">
+            <img class="bi me-2" th:src="@{/assets/logo.svg}">
         </a>
     </header>
 </div>
@@ -21,7 +21,7 @@
         <p class="lead mb-4 fs-2">Quickly handle the pre-paid cards sold in your own shop!</p>
         <p class="lead mb-4">Insert a card's code and check the balance</p>
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <a th:href="${path} + dashboard" class="btn btn-primary btn-lg px-4 gap-3">Private Area</a>
+            <a th:href="@{/dashboard} " class="btn btn-primary btn-lg px-4 gap-3">Private Area</a>
             <button id="check-balance-btn" type="button" class="btn btn-outline-secondary btn-lg px-4">Check balance</button>
         </div>
     </div>

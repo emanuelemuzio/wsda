@@ -25,16 +25,22 @@
       <span>Credit card</span>
     </h6>
     <ul class="nav flex-column mb-2">
-      <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-        <a class="nav-link" id="card-new-li" th:href="${path} + 'card/new'">
+      <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+        <a class="nav-link" id="credit-card-new-li" th:href="${path} + 'credit-card/new'">
           <span data-feather="plus-circle"></span>
           New
+        </a>
+      </li>
+      <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+        <a class="nav-link" id="credit-card-block-li" th:href="${path} + 'credit-card/block'">
+          <span data-feather="x-octagon"></span>
+          Block
         </a>
       </li>
     </ul>
     <ul class="nav flex-column mb-2">
       <li class="nav-item">
-        <a class="nav-link" id="credit-card-list-li" th:href="${path} + 'credit-card/list'">
+        <a class="nav-link" id="credit-card-list-lii" th:href="${path} + 'credit-card/list'">
           <span data-feather="list"></span>
           List
         </a>

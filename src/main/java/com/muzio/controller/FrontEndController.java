@@ -1,22 +1,33 @@
 package com.muzio.controller;
 
+import com.muzio.model.CreditCard;
+import com.muzio.model.Role;
+import com.muzio.model.Store;
+import com.muzio.model.User;
+import com.muzio.repository.CreditCardRepository;
+import com.muzio.repository.RoleRepository;
+import com.muzio.repository.StoreRepository;
 import com.muzio.repository.UserRepository;
+import com.muzio.service.AppService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootApplication
 @Controller
@@ -26,9 +37,15 @@ public class FrontEndController {
     }
 
     public String path;
+    public static String apiPath;
     public static String cssPath;
     public static String jsPath;
     public static String assetsPath;
+    @Autowired
+    private AppService service;
+    @Autowired
+    private CreditCardRepository creditCardRepository;
+
     @Autowired
     FrontEndController(
             @Value("${spring.base}") String path
@@ -37,6 +54,7 @@ public class FrontEndController {
         cssPath = path + "css/";
         jsPath = path + "js/";
         assetsPath = path + "assets/";
+        apiPath = path + "api/";
     }
 
     private void initModel(Model m){
@@ -44,23 +62,8 @@ public class FrontEndController {
         m.addAttribute("css", cssPath);
         m.addAttribute("js", jsPath);
         m.addAttribute("assets", assetsPath);
+        m.addAttribute("api", apiPath);
     }
-
-    //    @GetMapping("/error")
-//    String error(HttpServletRequest request){
-//        Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-//        if(status != null){
-//            Integer statusCode = Integer.valueOf(status.toString());
-//            switch(statusCode){
-//                case 403:
-//                    return "redirect:/403";
-//                default:
-//                break;
-//            }
-//        }
-//        return "error";
-//    }
-
     @GetMapping("/")
     String index(Model model){
         initModel(model);
@@ -110,9 +113,28 @@ public class FrontEndController {
         return "credit-card/list";
     }
 
-//    @GetMapping("**")
-//    String any(){
-//
-//        return "404";
-//    }
+    @GetMapping("/credit-card/block")
+    String creditCardBlock(Model model){
+        initModel(model);
+        return "credit-card/block";
+    }
+
+    @GetMapping("/credit-card/new")
+    String creditCardNew(Model model){
+        List<Map> stores = this.service.getStores();
+
+        CreditCard lastCreditCard = creditCardRepository.findTopByOrderByIdDesc();
+        int zeroes = 4 - lastCreditCard.getId().toString().length();
+        String newCardNumber = "5000-1234-5678-" + ("0".repeat(zeroes) + ((Integer)(lastCreditCard.getId() + 1)).toString());
+
+        CreditCard creditCard = new CreditCard();
+
+        creditCard.setNumber(newCardNumber);
+
+        initModel(model);
+        model.addAttribute("page", "credit-card-new");
+        model.addAttribute("creditCard", creditCard);
+        model.addAttribute("stores", stores);
+        return "credit-card/new";
+    }
 }

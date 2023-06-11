@@ -45,5 +45,8 @@
 <script>
     feather.replace()
 </script>
+<script th:if="${param.success}">
+    alert("Operation completed successfully")
+</script>
 </body>
 </html>

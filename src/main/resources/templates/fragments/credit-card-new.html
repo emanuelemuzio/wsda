@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="credit-card-new">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="mx-auto">New credit card form</h1>
+  </div>
+  <form class="needs-validation" id="credit-card-new-form" action="#" th:action="${api} + 'credit-card/new'" th:object="${creditCard}" method="POST">
+    <div class="row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-4">
+        <label for="number" class="form-label">Card number</label>
+        <input name="number" type="text" class="form-control" id="number" readonly required th:field="*{number}">
+      </div>
+      <div class="col-sm-4">
+        <label for="balance" class="form-label">Balance</label>
+        <input name="balance" type="text" class="form-control" id="balance" placeholder="" value="" th:field="*{balance}" required>
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-4">
+        <label for="store" class="form-label">Store</label>
+        <select name="store" class="form-select" id="store" placeholder="" value="" required th:field="*{store}">
+          <option value="" selected>Choose a store</option>
+          <option th:each="s : ${stores}" th:value="${s.value}" th:text="${s.label}"></option>
+        </select>
+      </div>
+      <div class="col-sm-4">
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
+    <div class="text-center my-4">
+      <input class="w-25 btn btn-primary btn-lg text-center" type="submit" value="Submit"></input>
+    </div>
+  </form>
+  <div class="text-center my-4">
+    <div id="merchant-new-success" style="display: none" class="my-2 alert alert-primary mx-auto w-25" ></div>
+    <div id="merchant-new-error" style="display: none" class="my-2 alert alert-danger mx-auto w-25" ></div>
+  </div>
+</div>
+</body>
+</html>
