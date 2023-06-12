@@ -52,12 +52,16 @@ public class AppService {
         return storeObj;
     }
 
+    public List<CreditCard> getCustomerCreditCards(User u){
+        return this.creditCardRepository.findCreditCardsByOwner(u);
+    }
+
     public List<CreditCard> getFreeCreditCards(){
         return this.creditCardRepository.findCreditCardsByOwnerNull();
     }
 
     public List<CreditCard> getFreeStoreCreditCards(Store store){
-        return this.creditCardRepository.findCreditCardsByOwnerNullAndStoreAndEnabled(store, 0);
+        return this.creditCardRepository.findCreditCardsByOwnerNullAndStoreAndEnabled(store, 1);
     }
 
     public List getCustomers(){

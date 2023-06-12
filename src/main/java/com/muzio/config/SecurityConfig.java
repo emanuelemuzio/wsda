@@ -81,7 +81,9 @@ public class SecurityConfig {
                                 "/api/customer/bind-credit-card",
                                 "/api/customer/disable**",
                                 "/api/customer/enable**",
-                                "/api/customer/delete**"
+                                "/api/customer/delete**",
+                                "/api/recharge-card**",
+                                "/api/charge-card**"
                         ).hasAnyAuthority("ROLE_MERCHANT")
                 )
                 .authorizeHttpRequests((requests) -> requests

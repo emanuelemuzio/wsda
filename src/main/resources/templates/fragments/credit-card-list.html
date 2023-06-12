@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<main th:fragment="credit-card-list" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="mx-auto">Credit cards list</h1>
+    </div>
+    <div id="customer-list-container" class="d-flex justify-content-evenly flex-wrap">
+        <div class="w-25">
+            <input class="form-control" id="creditCardFilter" type="text" placeholder="Search by email or number...">
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">N.</th>
+                <th scope="col">Balance</th>
+                <th scope="col">Owner</th>
+                <th scope="col">Enabled</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="credit-card-row" th:each="c : ${creditCards}">
+                <th scope="row" th:text="${c.id}"></th>
+                <td class="credit-card-number" th:text="${c.number}"></td>
+                <td th:text="${c.balance} + ' €'"></td>
+                <td class="owner-email" th:text="${c.owner}"></td>
+                <td th:text="${c.enabled}"></td>
+                <td>
+                    <a th:if="${c.enabled == 'Yes'}" class="modal-btn" onclick="setModal('recharge',this)" th:credit-card-id="${c.id}" th:credit-card-balance="${c.balance}" type="button" data-bs-toggle="modal" data-bs-target="#rechargeModal">
+                        <span class="d-inline-block table-action" data-feather="trending-up"></span>
+                    </a>
+                     -
+                    <a th:if="${c.enabled == 'Yes'}" class="modal-btn" onclick="setModal('purchase',this)" th:credit-card-id="${c.id}" th:credit-card-balance="${c.balance}" type="button" data-bs-toggle="modal" data-bs-target="#purchaseModal">
+                        <span class="d-inline-block table-action" data-feather="trending-down"></span>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <form method="post" th:action="${api} + 'recharge-card'">
+        <div class="modal fade" id="rechargeModal" tabindex="-1" aria-labelledby="rechargeModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="rechargeModalLabel">Recharge</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md">
+                                <label for="rechargeAmount" class="mb-2">Recharge amount (Actual balance: <span id="rechargeBalance"></span> €)</label>
+                                <span>
+                                <input type="number" data-bs-input id="rechargeAmount" class="form-control" name="rechargeAmount" value="0" min="5" max="500" step="5" />
+                              </span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="rechargeCreditCardId" name="rechargeCreditCardId" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form method="post" th:action="${api} + 'charge-card'">
+        <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="purchaseModalLabel">Purchase</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md">
+                                <label for="purchaseAmount" class="mb-2">Recharge amount (Actual balance: <span id="purchaseBalance"></span> €)</label>
+                                <span>
+                                <input type="number" data-bs-input id="purchaseAmount" class="form-control purchase-max" name="purchaseAmount" value="0" min="5" step="5" />
+                              </span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="purchaseCreditCardId" name="purchaseCreditCardId" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</main>
+</body>
+</html>

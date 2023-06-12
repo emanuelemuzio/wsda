@@ -48,7 +48,7 @@ VALUES ('admin@muzio.it','admin','test','$2a$10$AWppFeS60D..f/4PpOF/juj0CLu1sWgQ
 INSERT INTO credit_card(balance, number, owner_id, store_id) VALUES (1000, '5000123456780001', null, 1);
 
 ALTER TABLE credit_card
-    ADD CONSTRAINT fk_credit_card_owner_id FOREIGN KEY (owner_id) REFERENCES users(id),
+    ADD CONSTRAINT fk_credit_card_owner_id FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE,
     ADD CONSTRAINT fk_credit_card_store_id FOREIGN KEY (store_id) REFERENCES store(id);
 
 ALTER TABLE users

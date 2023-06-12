@@ -188,8 +188,31 @@ public class FrontEndController {
 
     @GetMapping("/credit-card/list")
     String creditCardList(Model model){
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Store store = customUserDetails.getStore();
+
+        List<User> customerEntityList = this.appService.getStoreCustomers(store);
+        List<Map> creditCards = new ArrayList<>();
+
+        for(User u : customerEntityList){
+            List<CreditCard> customerCreditCards = this.appService.getCustomerCreditCards(u);
+            for(CreditCard c : customerCreditCards){
+                HashMap<String, String> creditCardInfo = new HashMap<>();
+
+                creditCardInfo.put("id", c.getId().toString());
+                creditCardInfo.put("number", c.getNumber());
+                creditCardInfo.put("balance", c.getBalance().toString());
+                creditCardInfo.put("owner", c.getOwner().getEmail());
+                creditCardInfo.put("enabled", c.getEnabled() == 1 ? "Yes" : "No");
+
+                creditCards.add(creditCardInfo);
+            }
+        }
+
         initModel(model);
         model.addAttribute("page", "credit-card-list");
+        model.addAttribute("creditCards", creditCards);
+
         return "credit-card/list";
     }
 

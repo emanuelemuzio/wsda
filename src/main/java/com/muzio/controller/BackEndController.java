@@ -33,7 +33,7 @@ public class BackEndController {
     @PostMapping("/credit-card/new")
     String createNewCreditCard(@ModelAttribute CreditCard creditCard, Model model){
         creditCard.setNumber(creditCard.getNumber().replace("-",""));
-        creditCard.setEnabled(0);
+        creditCard.setEnabled(1);
         this.appService.save(creditCard);
         return "redirect:/dashboard?success";
     }
@@ -92,6 +92,40 @@ public class BackEndController {
 
         creditCard.get().setOwner(customer.get());
         creditCard.get().setEnabled(1);
+        this.appService.save(creditCard.get());
+
+        return "redirect:/dashboard?success";
+    }
+
+    @PostMapping("/recharge-card")
+    String rechargeCreditCard(
+            @RequestParam String rechargeCreditCardId,
+            @RequestParam String rechargeAmount
+    ){
+        Optional <CreditCard> creditCard = this.appService.getCreditCardRepository().findById(Integer.parseInt(rechargeCreditCardId));
+
+        if(creditCard.isEmpty()){
+            return "redirect:/credit-card/list?error=Credit card not found";
+        }
+
+        creditCard.get().setBalance(creditCard.get().getBalance() + Integer.parseInt(rechargeAmount));
+        this.appService.save(creditCard.get());
+
+        return "redirect:/dashboard?success";
+    }
+
+    @PostMapping("/charge-card")
+    String chargeCreditCard(
+            @RequestParam String purchaseCreditCardId,
+            @RequestParam String purchaseAmount
+    ){
+        Optional <CreditCard> creditCard = this.appService.getCreditCardRepository().findById(Integer.parseInt(purchaseCreditCardId));
+
+        if(creditCard.isEmpty()){
+            return "redirect:/credit-card/list?error=Credit card not found";
+        }
+
+        creditCard.get().setBalance(creditCard.get().getBalance() - Integer.parseInt(purchaseAmount));
         this.appService.save(creditCard.get());
 
         return "redirect:/dashboard?success";

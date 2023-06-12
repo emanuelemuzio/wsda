@@ -20,7 +20,6 @@
     </style>
     <!-- Custom styles for this template -->
     <link th:href="${css} + dashboard.css" rel="stylesheet">
-    <link th:href="${css} + backend.css" rel="stylesheet">
     <link th:href="${css} + bootstrap.min.css" rel="stylesheet" >
 </head>
 <body>
@@ -28,8 +27,7 @@
 <div class="container-fluid">
     <div class="row">
         <nav th:replace="fragments/navbar.html :: nav"></nav>
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div th:replace="fragments/credit-card-block.html :: credit-card-block" ></div>
+        <main th:replace="fragments/credit-card-list.html :: credit-card-list" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         </main>
     </div>
 </div>
@@ -38,7 +36,6 @@
     const page = /*[[${page}]]*/ ""
 </script>
 <script th:src="${js} + jquery-3.7.0.min.js"></script>
-<script th:src="${js} + backend.js">
 </script>
 <script th:src="${js} + bootstrap.min.js"></script>
 <script th:src="${js} + credit-card.js"></script>
