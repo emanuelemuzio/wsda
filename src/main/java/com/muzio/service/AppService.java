@@ -53,7 +53,7 @@ public class AppService {
     }
 
     public List getCustomers(){
-        Role customerRole = roleRepository.findByName("CUSTOMER");
+        Role customerRole = roleRepository.findByName("ROLE_CUSTOMER");
         List<User> customersEntityList = userRepository.findByRole(customerRole);
         List<Map> customersList = new ArrayList();
         for(User u : customersEntityList){
@@ -61,6 +61,11 @@ public class AppService {
             customersList.add(userObj);
         }
         return customersList;
+    }
+
+    public List<User> getMerchants(){
+        Role merchantRole = roleRepository.findByName("ROLE_MERCHANT");
+        return userRepository.findByRole(merchantRole);
     }
 
     public HashMap<String, String> createUserObject(User u){

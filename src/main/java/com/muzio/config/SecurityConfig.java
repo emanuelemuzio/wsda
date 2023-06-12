@@ -51,13 +51,27 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/","/css/**","/assets/**","/js/**", "/favicon.ico").permitAll()
+                        .requestMatchers("/",
+                                "/css/**",
+                                "/assets/**",
+                                "/js/**",
+                                "/favicon.ico",
+                                "/balance**"
+                                ).permitAll()
                 )
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/get_card_balance").permitAll()
                 )
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/credit-card/new","/api/credit-card/new","/merchant/new","/api/merchant/new").hasAnyAuthority("ROLE_ADMIN")
+                        .requestMatchers(
+                                "/credit-card/new",
+                                "/api/credit-card/new",
+                                "/merchant/new",
+                                "/api/merchant/new",
+                                "/api/merchant/disable**",
+                                "/api/merchant/enable**",
+                                "/api/merchant/delete**"
+                                ).hasAnyAuthority("ROLE_ADMIN")
                 )
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/dashboard").hasAnyAuthority("ROLE_ADMIN","ROLE_MERCHANT","ROLE_CUSTOMER")

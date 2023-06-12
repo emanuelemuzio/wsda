@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,16 @@ public class FrontEndController {
         jsPath = path + "js/";
         assetsPath = path + "assets/";
         apiPath = path + "api/";
+    }
+
+    @PostMapping("/balance")
+    String getCardBalance(@RequestParam String number, Model model){
+        CreditCard cc = this.appService.getCreditCardRepository().findCreditCardByNumber(number);
+        if(cc == null){
+            return "redirect:/?err";
+        }
+        model.addAttribute("balance", cc.getBalance());
+        return index(model);
     }
 
     private void initModel(Model m){
@@ -104,10 +115,25 @@ public class FrontEndController {
 
     @GetMapping("/merchant/list")
     String merchantsList(Model model){
+        List<User> merchantEntityList = this.appService.getMerchants();
+        List<Map> merchantList = new ArrayList<>();
 
+        for(User u : merchantEntityList){
+            HashMap<String, String> userInfo = new HashMap<>();
+
+            userInfo.put("id", u.getId().toString());
+            userInfo.put("firstName", u.getFirstName());
+            userInfo.put("lastName", u.getLastName());
+            userInfo.put("email", u.getEmail());
+            userInfo.put("store", u.getStore().getName());
+            userInfo.put("enabled", u.getEnabled() ? "Yes" : "No");
+
+            merchantList.add(userInfo);
+        }
 
         initModel(model);
         model.addAttribute("page", "merchant-list");
+        model.addAttribute("merchants", merchantList);
         return "merchant/list";
     }
 

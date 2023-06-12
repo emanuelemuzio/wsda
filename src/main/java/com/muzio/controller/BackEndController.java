@@ -74,22 +74,68 @@ public class BackEndController {
         return "redirect:/dashboard?success";
     }
 
+    @GetMapping("/merchant/delete")
+    String deleteMerchant(@RequestParam String id){
+        Optional<User> user = this.appService.getUserRepository().findById((Integer.parseInt(id)));
+        List<String> err = new ArrayList<>();
+
+        user.ifPresentOrElse(
+                merchant -> this.appService.getUserRepository().delete(merchant),
+                () -> err.add("redirect:/merchant/list?error=User not found")
+            );
+
+        if(!err.isEmpty()){
+            return err.get(0);
+        }
+
+        return "redirect:/dashboard?success";
+    }
+
+    @GetMapping("/merchant/disable")
+    String disableMerchant(@RequestParam String id){
+        Optional<User> user = this.appService.getUserRepository().findById((Integer.parseInt(id)));
+        List<String> err = new ArrayList<>();
+
+        user.ifPresentOrElse(
+                merchant -> {
+                    merchant.setEnabled(false);
+                    this.appService.getUserRepository().save(merchant);
+                },
+                () -> err.add("redirect:/merchant/list?error=User not found")
+        );
+
+        if(!err.isEmpty()){
+            return err.get(0);
+        }
+
+        return "redirect:/dashboard?success";
+    }
+
+    @GetMapping("/merchant/enable")
+    String enableMerchant(@RequestParam String id){
+        Optional<User> user = this.appService.getUserRepository().findById((Integer.parseInt(id)));
+        List<String> err = new ArrayList<>();
+
+        user.ifPresentOrElse(
+                merchant -> {
+                    merchant.setEnabled(true);
+                    this.appService.getUserRepository().save(merchant);
+                },
+                () -> err.add("redirect:/merchant/list?error=User not found")
+        );
+
+        if(!err.isEmpty()){
+            return err.get(0);
+        }
+
+        return "redirect:/dashboard?success";
+    }
+
     @PostMapping("/merchant/list")
-    GetMerchantsListResponse creditCardList(GetMerchantsListRequest request){
-        String token = request.token();
-        Role role = this.appService.getRoleRepository().findByName("ROLE_MERCHANT");
-        User merchantsList = this.appService.getUserRepository().findByEmail("ciao");
+    String creditCardList(Model model){
+        List<User> merchantsList = this.appService.getMerchants();
 
-        ArrayList formattedResponse = new ArrayList();
-
-//        for(User u : merchantsList){
-//            HashMap<String, Object> record = new HashMap<>();
-//            record.put("name", u.getUsername());
-//            record.put("email", u.getUsername());
-//            formattedResponse.add(record);
-//        }
-
-        return new GetMerchantsListResponse(200, formattedResponse);
+        return "/merchant/list";
     }
 
 //    @PostMapping("/get_credit_card_list")

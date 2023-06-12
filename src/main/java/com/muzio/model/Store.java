@@ -23,6 +23,11 @@ public class Store {
     private String name;
 
     @ManyToMany
+    @JoinTable(
+            name = "users_registered_store",
+            joinColumns = @JoinColumn(name = "store_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     Set<User> registeredUsers;
 
     @Override

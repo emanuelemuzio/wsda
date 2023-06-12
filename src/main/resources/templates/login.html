@@ -41,7 +41,8 @@
         <button id="login-btnn" class="w-100 btn btn-lg btn-primary mb-2" type="submit">Sign in</button>
     </form>
     <a class="w-100 btn btn-lg btn-secondary" th:href="${path}">Home</a>
-    <div id="login-response-err" style="display: none" class="my-4 alert alert-danger" ></div>
+    <div th:if="${param.error != null}" th:text="'Wrong credentials or disabled user'" id="login-response-err" class="my-4 alert alert-danger" >
+    </div>
 </main>
 </body>
 <link th:href="${css} + login.css" rel="stylesheet">

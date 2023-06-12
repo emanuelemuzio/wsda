@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS credit_card (
     store_id INT
 );
 
-CREATE TABLE IF NOT EXISTS user_store (
+CREATE TABLE IF NOT EXISTS users_registered_stores (
     user_id INT,
     store_id INT,
     PRIMARY KEY (user_id, store_id),
@@ -39,13 +39,12 @@ CREATE TABLE IF NOT EXISTS user_store (
     FOREIGN KEY (store_id) REFERENCES store(id)
 );
 
-INSERT INTO roles(id, name) VALUES (1,'ROLE_ADMIN'),(2, 'ROLE_MERCHANT'),(3, 'ROLE_CUSTOMER');
-INSERT INTO users(email, first_name, last_name, password, role_id, enabled)
-VALUES ('admin@muzio.it','admin','test','$2a$10$AWppFeS60D..f/4PpOF/juj0CLu1sWgQ/TrifH69SLY4OT197nMF6',1,1),
-       ('merchant@muzio.it','merchant','test','$2a$10$AWppFeS60D..f/4PpOF/juj0CLu1sWgQ/TrifH69SLY4OT197nMF6',2,1),
-       ('customer@muzio.it','customer','test','$2a$10$AWppFeS60D..f/4PpOF/juj0CLu1sWgQ/TrifH69SLY4OT197nMF6',3,1);
 INSERT INTO store(id, name) VALUES (1, 'Test Store');
-INSERT INTO user_store(user_id, store_id) VALUES (3, 1);
+INSERT INTO roles(id, name) VALUES (1,'ROLE_ADMIN'),(2, 'ROLE_MERCHANT'),(3, 'ROLE_CUSTOMER');
+INSERT INTO users(email, first_name, last_name, password, store_id, role_id, enabled)
+VALUES ('admin@muzio.it','admin','test','$2a$10$AWppFeS60D..f/4PpOF/juj0CLu1sWgQ/TrifH69SLY4OT197nMF6', null, 1,1),
+('merchant@muzio.it','merchant','test','$2a$10$AWppFeS60D..f/4PpOF/juj0CLu1sWgQ/TrifH69SLY4OT197nMF6', 1, 2,1),
+('customer@muzio.it','customer','test','$2a$10$AWppFeS60D..f/4PpOF/juj0CLu1sWgQ/TrifH69SLY4OT197nMF6', null, 3,1);
 INSERT INTO credit_card(balance, number, owner_id, store_id) VALUES (1000, '5000123456780001', null, 1);
 
 ALTER TABLE credit_card

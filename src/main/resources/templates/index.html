@@ -28,11 +28,13 @@
 </div>
 <div id="credit-card-div" style="display: none" class="px-4 py-5 my-5 text-center">
     <div class="col-lg-6 mx-auto">
-        <input type="text" class="form-control" placeholder="Card number" id="credit-card-number" aria-label="Card number">
-        <div id="credit-card-response-succ" style="display: none" class="my-4 alert alert-primary" ></div>
-        <div id="credit-card-response-err" style="display: none" class="my-4 alert alert-danger" ></div>
+        <form method="POST" th:action="@{/balance}">
+            <input type="text" class="form-control" placeholder="Card number" name="number" id="number" aria-label="Card number">
+        </form>
     </div>
 </div>
+<div th:if="${param.err != null}" th:text="'Card not found!'" id="credit-card-response-err" class="col-lg-3 text-center mx-auto my-4 alert alert-danger" ></div>
+<div th:if="${balance != null}" th:text="'The balance is: ' + ${balance} + '€'" id="credit-card-response-succ"  class="col-lg-3 text-center mx-auto my-4 alert alert-primary" ></div>
 </body>
 <script th:inline="javascript">
     const baseUrl = /*[[${path}]]*/ ""

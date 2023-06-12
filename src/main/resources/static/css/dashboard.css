@@ -106,3 +106,11 @@ body {
 .card{
     flex: 0 0 40%;
 }
+
+.table-action {
+    color: #31aa4b;
+}
+
+.table-action:hover{
+    color: #31AA4BFF;
+}

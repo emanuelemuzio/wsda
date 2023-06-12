@@ -25,13 +25,13 @@
       <span>Credit card</span>
     </h6>
     <ul sec:authorize="hasAnyRole('ROLE_ADMIN')" class="nav flex-column mb-2">
-      <li sec:authorize="hasAnyRole('ROLE_ADMIN')" class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" id="credit-card-new-li" th:href="${path} + 'credit-card/new'">
           <span data-feather="plus-circle"></span>
           New
         </a>
       </li>
-      <li sec:authorize="hasAnyRole('ROLE_ADMIN')" class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" id="credit-card-block-li" th:href="${path} + 'credit-card/block'">
           <span data-feather="x-octagon"></span>
           Block
@@ -49,7 +49,7 @@
     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
       <span>Admin panel</span>
     </h6>
-    <ul class="nav flex-column mb-2">
+    <ul sec:authorize="hasAnyRole('ROLE_ADMIN')" class="nav flex-column mb-2">
       <li class="nav-item">
         <a id="merchant-new-li" class="nav-link" th:href="${path} + 'merchant/new'">
           <span data-feather="plus-circle"></span>
