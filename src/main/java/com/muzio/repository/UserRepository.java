@@ -1,6 +1,7 @@
 package com.muzio.repository;
 
 import com.muzio.model.Role;
+import com.muzio.model.Store;
 import com.muzio.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,5 +13,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByEmail(String email);
 
     List<User> findByRole(Role role);
+    List<User> findUserByStoreAndRole(Store store, Role role);
 }
 

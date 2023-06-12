@@ -4,13 +4,8 @@ import com.muzio.model.CreditCard;
 import com.muzio.model.Role;
 import com.muzio.model.Store;
 import com.muzio.model.User;
-import com.muzio.repository.CreditCardRepository;
-import com.muzio.repository.RoleRepository;
-import com.muzio.repository.StoreRepository;
-import com.muzio.repository.UserRepository;
 import com.muzio.service.AppService;
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.http.HttpServletRequest;
+import com.muzio.service.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -58,7 +53,7 @@ public class FrontEndController {
 
     @PostMapping("/balance")
     String getCardBalance(@RequestParam String number, Model model){
-        CreditCard cc = this.appService.getCreditCardRepository().findCreditCardByNumber(number);
+        CreditCard cc = this.appService.getCreditCardByNumber(number);
         if(cc == null){
             return "redirect:/?err";
         }
@@ -113,6 +108,21 @@ public class FrontEndController {
         return "merchant/new";
     }
 
+    @GetMapping("/customer/new")
+    String newCustomer(Model model){
+        initModel(model);
+        User newCustomer =  new User();
+
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Store store = customUserDetails.getStore();
+
+        model.addAttribute("page", "merchant-new");
+        model.addAttribute("customer", newCustomer);
+        model.addAttribute("storeId", store.getId());
+        model.addAttribute("storeName", store.getName());
+        return "customer/new";
+    }
+
     @GetMapping("/merchant/list")
     String merchantsList(Model model){
         List<User> merchantEntityList = this.appService.getMerchants();
@@ -135,6 +145,45 @@ public class FrontEndController {
         model.addAttribute("page", "merchant-list");
         model.addAttribute("merchants", merchantList);
         return "merchant/list";
+    }
+
+    @GetMapping("/customer/list")
+    String customersList(Model model){
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Store store = customUserDetails.getStore();
+
+        List<User> customerEntityList = this.appService.getStoreCustomers(store);
+        List<Map> customerList = new ArrayList<>();
+
+        for(User u : customerEntityList){
+            HashMap<String, String> userInfo = new HashMap<>();
+
+            userInfo.put("id", u.getId().toString());
+            userInfo.put("firstName", u.getFirstName());
+            userInfo.put("lastName", u.getLastName());
+            userInfo.put("email", u.getEmail());
+            userInfo.put("enabled", u.getEnabled() ? "Yes" : "No");
+
+            customerList.add(userInfo);
+        }
+
+        List<CreditCard> freeCreditCardsEntityList = this.appService.getFreeStoreCreditCards(store);
+
+        List<Map> freeCreditCardsList = new ArrayList<>();
+
+        for(CreditCard c : freeCreditCardsEntityList){
+            HashMap<String, String> ccInfo = new HashMap<>();
+            ccInfo.put("value", c.getId().toString());
+            ccInfo.put("label", c.getNumber());
+
+            freeCreditCardsList.add(ccInfo);
+        }
+
+        initModel(model);
+        model.addAttribute("page", "customer-list");
+        model.addAttribute("customers", customerList);
+        model.addAttribute("creditCards", freeCreditCardsList);
+        return "customer/list";
     }
 
     @GetMapping("/credit-card/list")

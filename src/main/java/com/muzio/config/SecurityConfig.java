@@ -74,6 +74,17 @@ public class SecurityConfig {
                                 ).hasAnyAuthority("ROLE_ADMIN")
                 )
                 .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers(
+                                "/customer/new",
+                                "/customer/list",
+                                "/api/customer/new",
+                                "/api/customer/bind-credit-card",
+                                "/api/customer/disable**",
+                                "/api/customer/enable**",
+                                "/api/customer/delete**"
+                        ).hasAnyAuthority("ROLE_MERCHANT")
+                )
+                .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/dashboard").hasAnyAuthority("ROLE_ADMIN","ROLE_MERCHANT","ROLE_CUSTOMER")
                         .anyRequest().authenticated()
                 )

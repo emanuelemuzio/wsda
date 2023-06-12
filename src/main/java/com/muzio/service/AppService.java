@@ -52,15 +52,27 @@ public class AppService {
         return storeObj;
     }
 
+    public List<CreditCard> getFreeCreditCards(){
+        return this.creditCardRepository.findCreditCardsByOwnerNull();
+    }
+
+    public List<CreditCard> getFreeStoreCreditCards(Store store){
+        return this.creditCardRepository.findCreditCardsByOwnerNullAndStoreAndEnabled(store, 0);
+    }
+
     public List getCustomers(){
         Role customerRole = roleRepository.findByName("ROLE_CUSTOMER");
         List<User> customersEntityList = userRepository.findByRole(customerRole);
-        List<Map> customersList = new ArrayList();
-        for(User u : customersEntityList){
-            HashMap<String, String> userObj = this.createUserObject(u);
-            customersList.add(userObj);
-        }
-        return customersList;
+        return customersEntityList;
+    }
+
+    public List<User> getStoreCustomers(Store store){
+        Role customerRole = roleRepository.findByName("ROLE_CUSTOMER");
+        return this.userRepository.findUserByStoreAndRole(store, customerRole);
+    }
+
+    public CreditCard getCreditCardByNumber(String number){
+        return this.creditCardRepository.findCreditCardByNumber(number);
     }
 
     public List<User> getMerchants(){

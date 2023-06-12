@@ -1,6 +1,7 @@
 package com.muzio.service;
 
 import com.muzio.model.Role;
+import com.muzio.model.Store;
 import com.muzio.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,6 +12,10 @@ import java.util.*;
 public class CustomUserDetails implements UserDetails {
 
     private User user;
+
+    public User getUser(){
+        return this.user;
+    }
 
     public CustomUserDetails(User user) {
         this.user = user;
@@ -61,5 +66,9 @@ public class CustomUserDetails implements UserDetails {
 
     public String getFullName() {
         return user.getFirstName() + " " + user.getLastName();
+    }
+
+    public Store getStore(){
+        return this.user.getStore();
     }
 }

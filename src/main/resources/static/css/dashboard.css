@@ -114,3 +114,7 @@ body {
 .table-action:hover{
     color: #31AA4BFF;
 }
+
+.bind-credit-card:hover{
+    cursor: pointer;
+}

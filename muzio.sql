@@ -44,7 +44,7 @@ INSERT INTO roles(id, name) VALUES (1,'ROLE_ADMIN'),(2, 'ROLE_MERCHANT'),(3, 'RO
 INSERT INTO users(email, first_name, last_name, password, store_id, role_id, enabled)
 VALUES ('admin@muzio.it','admin','test','$2a$10$AWppFeS60D..f/4PpOF/juj0CLu1sWgQ/TrifH69SLY4OT197nMF6', null, 1,1),
 ('merchant@muzio.it','merchant','test','$2a$10$AWppFeS60D..f/4PpOF/juj0CLu1sWgQ/TrifH69SLY4OT197nMF6', 1, 2,1),
-('customer@muzio.it','customer','test','$2a$10$AWppFeS60D..f/4PpOF/juj0CLu1sWgQ/TrifH69SLY4OT197nMF6', null, 3,1);
+('customer@muzio.it','customer','test','$2a$10$AWppFeS60D..f/4PpOF/juj0CLu1sWgQ/TrifH69SLY4OT197nMF6', 1, 3,1);
 INSERT INTO credit_card(balance, number, owner_id, store_id) VALUES (1000, '5000123456780001', null, 1);
 
 ALTER TABLE credit_card

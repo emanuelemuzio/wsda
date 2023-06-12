@@ -74,6 +74,50 @@ public class BackEndController {
         return "redirect:/dashboard?success";
     }
 
+    @PostMapping("/customer/bind-credit-card")
+    String bindCreditCard(
+            @RequestParam String userId,
+            @RequestParam String creditCardId
+    ){
+        Optional <CreditCard> creditCard = this.appService.getCreditCardRepository().findById(Integer.parseInt(creditCardId));
+        Optional <User> customer = this.appService.getUserRepository().findById(Integer.parseInt(userId));
+
+        if(creditCard.isEmpty()){
+            return "redirect:/customer/list?error=Credit card not found";
+        }
+
+        if(customer.isEmpty()){
+            return "redirect:/customer/list?error=User not found";
+        }
+
+        creditCard.get().setOwner(customer.get());
+        creditCard.get().setEnabled(1);
+        this.appService.save(creditCard.get());
+
+        return "redirect:/dashboard?success";
+    }
+
+    @PostMapping("/customer/new")
+    String createCustomerNew(
+            @ModelAttribute User newCustomer
+    ){
+        User existingUser = this.appService.getUserRepository().findByEmail(newCustomer.getEmail());
+        if(existingUser != null){
+            return "redirect:/customer/new?error=This email is already in use!";
+        }
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        Role customerRole = this.appService.getRole("ROLE_CUSTOMER");
+
+        newCustomer.setRole(customerRole);
+        newCustomer.setEnabled(true);
+        newCustomer.setPassword(encoder.encode(newCustomer.getPassword()));
+        this.appService.save(newCustomer);
+
+        return "redirect:/dashboard?success";
+    }
+
     @GetMapping("/merchant/delete")
     String deleteMerchant(@RequestParam String id){
         Optional<User> user = this.appService.getUserRepository().findById((Integer.parseInt(id)));
@@ -129,6 +173,44 @@ public class BackEndController {
         }
 
         return "redirect:/dashboard?success";
+    }
+
+    @GetMapping("/customer/delete")
+    String customerMerchant(@RequestParam String id){
+        Optional<User> user = this.appService.getUserRepository().findById((Integer.parseInt(id)));
+        List<String> err = new ArrayList<>();
+
+        if(user.isPresent()){
+            this.appService.getUserRepository().delete(user.get());
+            return "redirect:/dashboard?success";
+        }
+        return "redirect:/customer/list?error=User not found";
+    }
+
+    @GetMapping("/customer/disable")
+    String disableCustomer(@RequestParam String id){
+        Optional<User> user = this.appService.getUserRepository().findById((Integer.parseInt(id)));
+        List<String> err = new ArrayList<>();
+
+        if(user.isPresent()){
+            user.get().setEnabled(false);
+            this.appService.save(user.get());
+            return "redirect:/dashboard?success";
+        }
+        return "redirect:/customer/list?error=User not found";
+    }
+
+    @GetMapping("/customer/enable")
+    String enableCustomer(@RequestParam String id){
+        Optional<User> user = this.appService.getUserRepository().findById((Integer.parseInt(id)));
+        List<String> err = new ArrayList<>();
+
+        if(user.isPresent()){
+            user.get().setEnabled(true);
+            this.appService.save(user.get());
+            return "redirect:/dashboard?success";
+        }
+        return "redirect:/customer/list?error=User not found";
     }
 
     @PostMapping("/merchant/list")

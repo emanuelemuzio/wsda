@@ -31,9 +31,9 @@
               <td th:text="${m.store}"></td>
               <td th:text="${m.enabled}"></td>
               <td>
-                  <a th:href="${api} + 'merchant/disable?id=' + ${m.id}"><span class="d-inline-block table-action" data-feather="lock" th:if="${m.enabled == 'Yes'}" >Disable</span></a>
-                  <a th:href="${api} + 'merchant/enable?id=' + ${m.id}"><span class="d-inline-block table-action" data-feather="unlock" th:unless="${m.enabled == 'Yes'}">Enable</span></a>
-                  <a th:href="${api} + 'merchant/delete?id=' + ${m.id}"><span class="d-inline-block table-action" data-feather="trash-2" >Delete</span></a>
+                  <a th:href="${api} + 'merchant/disable?id=' + ${m.id}"><span class="d-inline-block table-action" data-feather="lock" th:if="${m.enabled == 'Yes'}" ></span></a>
+                  <a th:href="${api} + 'merchant/enable?id=' + ${m.id}"><span class="d-inline-block table-action" data-feather="unlock" th:unless="${m.enabled == 'Yes'}"></span></a>
+                  <a th:href="${api} + 'merchant/delete?id=' + ${m.id}"><span class="d-inline-block table-action" data-feather="trash-2" ></span></a>
               </td>
           </tr>
           </tbody>
