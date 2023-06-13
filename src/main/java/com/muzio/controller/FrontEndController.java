@@ -1,7 +1,5 @@
 package com.muzio.controller;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.muzio.model.CreditCard;
 import com.muzio.model.Store;
 import com.muzio.model.Transaction;
@@ -18,9 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileOutputStream;
-import java.security.Principal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,13 +56,6 @@ public class FrontEndController {
         model.addAttribute("balance", cc.getBalance());
         return index(model);
     }
-
-    @GetMapping("/testpdf")
-    String generateReport(){
-
-        return "index";
-    }
-
     private void initModel(Model m){
         m.addAttribute("path", this.path);
         m.addAttribute("css", cssPath);
