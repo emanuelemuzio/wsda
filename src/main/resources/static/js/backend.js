@@ -1,6 +1,10 @@
+if(page){
+    $("#" + page + "-li").addClass("active")
+}
+
 const openModal = (t) =>{
     const userId = t.getAttribute("customer-id")
-    const userIdInput = $("#userId").val(userId)
+    $("#userId").val(userId)
 }
 
 const setModal = (modal, t) =>{
@@ -21,6 +25,22 @@ $("#creditCardFilter").keyup(function(e){
         }
         else{
             row.closest(".credit-card-row").style.display = "none"
+        }
+    }
+})
+
+$("#emailFilter").keyup(function(e){
+    console.log('hi')
+
+    const emailFilter = e.target.value
+    const emails = $(".customer-row > .customer-email")
+
+    for(email of emails){
+        if(email.innerText.includes(emailFilter)){
+            email.closest(".customer-row").style.display = "table-row"
+        }
+        else{
+            email.closest(".customer-row").style.display = "none"
         }
     }
 })

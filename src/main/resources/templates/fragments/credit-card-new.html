@@ -9,7 +9,7 @@
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="mx-auto">New credit card form</h1>
   </div>
-  <form class="needs-validation" id="credit-card-new-form" action="#" th:action="${api} + 'credit-card/new'" th:object="${creditCard}" method="POST">
+  <form autocomplete="off" class="needs-validation" id="credit-card-new-form" action="#" th:action="${api} + 'credit-card/new'" th:object="${creditCard}" method="POST">
     <div class="row">
       <div class="col-sm-2"></div>
       <div class="col-sm-4">
@@ -18,7 +18,7 @@
       </div>
       <div class="col-sm-4">
         <label for="balance" class="form-label">Balance</label>
-        <input name="balance" type="text" class="form-control" id="balance" placeholder="" value="" th:field="*{balance}" required>
+        <input name="balance" type="number" class="form-control" id="balance" placeholder="" value="0" min="10" step="5" th:field="*{balance}" required>
       </div>
       <div class="col-sm-2"></div>
     </div>
@@ -39,10 +39,6 @@
       <input class="w-25 btn btn-primary btn-lg text-center" type="submit" value="Submit"></input>
     </div>
   </form>
-  <div class="text-center my-4">
-    <div id="merchant-new-success" style="display: none" class="my-2 alert alert-primary mx-auto w-25" ></div>
-    <div id="merchant-new-error" style="display: none" class="my-2 alert alert-danger mx-auto w-25" ></div>
-  </div>
 </div>
 </body>
 </html>

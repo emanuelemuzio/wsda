@@ -36,9 +36,6 @@
 <div th:if="${param.err != null}" th:text="'Card not found!'" id="credit-card-response-err" class="col-lg-3 text-center mx-auto my-4 alert alert-danger" ></div>
 <div th:if="${balance != null}" th:text="'The balance is: ' + ${balance} + '€'" id="credit-card-response-succ"  class="col-lg-3 text-center mx-auto my-4 alert alert-primary" ></div>
 </body>
-<script th:inline="javascript">
-    const baseUrl = /*[[${path}]]*/ ""
-</script>
 <script th:src="${js} +jquery-3.7.0.min.js"></script>
 <script th:src="${js} + bootstrap.min.js"></script>
 <script th:src="${js} + index.js"></script>

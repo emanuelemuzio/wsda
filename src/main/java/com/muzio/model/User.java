@@ -6,17 +6,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name="users")
 public class User
 {
+    public User(){
+        this.registeredStores = new HashSet<>();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -41,10 +46,15 @@ public class User
     @JoinColumn(name = "store_id", nullable = true)
     private Store store;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "registeredUsers", cascade = {CascadeType.MERGE})
     Set<Store> registeredStores;
 
     private Boolean enabled;
+
+    public void addStore(Store s){
+        this.registeredStores.add(s);
+        s.getRegisteredUsers().add(this);
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -56,7 +56,8 @@ public class SecurityConfig {
                                 "/assets/**",
                                 "/js/**",
                                 "/favicon.ico",
-                                "/balance**"
+                                "/balance**",
+                                "/testpdf"
                                 ).permitAll()
                 )
                 .authorizeHttpRequests((requests) -> requests
@@ -70,8 +71,12 @@ public class SecurityConfig {
                                 "/api/merchant/new",
                                 "/api/merchant/disable**",
                                 "/api/merchant/enable**",
-                                "/api/merchant/delete**"
-                                ).hasAnyAuthority("ROLE_ADMIN")
+                                "/api/merchant/delete**",
+                                "/store/new",
+                                "/api/store/new",
+                                "/store/delete",
+                                "/api/store/delete"
+                        ).hasAnyAuthority("ROLE_ADMIN")
                 )
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(

@@ -22,13 +22,26 @@ public class Store {
     private Integer id;
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH})
     @JoinTable(
-            name = "users_registered_store",
+            name = "users_registered_stores",
             joinColumns = @JoinColumn(name = "store_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     Set<User> registeredUsers;
+
+    public void addCustomer(User c){
+        this.registeredUsers.add(c);
+        c.getRegisteredStores().add(this);
+    }
+
+    public void removeUser(Integer userId) {
+        User user = this.registeredUsers.stream().filter(t -> t.getId() == userId).findFirst().orElse(null);
+        if (user != null) {
+            this.registeredUsers.remove(user);
+            user.getRegisteredStores().remove(this);
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

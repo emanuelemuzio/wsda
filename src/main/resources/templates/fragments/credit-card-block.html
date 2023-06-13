@@ -30,9 +30,6 @@
       <input class="w-25 btn btn-primary btn-lg text-center" type="submit" value="Submit"></input>
     </div>
   </form>
-  <div class="text-center my-4">
-    <div th:style="${param.error == null ? 'display : none' : 'display : block'}" class="my-2 alert alert-danger mx-auto w-25" th:text="${param.error == null ? '' : param.error}"></div>
-  </div>
 </div>
 </body>
 </html>

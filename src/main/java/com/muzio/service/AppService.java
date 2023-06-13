@@ -1,10 +1,8 @@
 package com.muzio.service;
 
 import com.muzio.model.*;
-import com.muzio.repository.CreditCardRepository;
-import com.muzio.repository.RoleRepository;
-import com.muzio.repository.StoreRepository;
-import com.muzio.repository.UserRepository;
+import com.muzio.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +11,7 @@ import java.util.*;
 
 @Service
 @Getter
+@Transactional
 public class AppService {
     @Autowired
     private UserRepository userRepository;
@@ -22,6 +21,8 @@ public class AppService {
     private StoreRepository storeRepository;
     @Autowired
     private CreditCardRepository creditCardRepository;
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     public List getStores(){
         List<Store> storeEntityList = storeRepository.findByOrderByNameAsc();
@@ -31,6 +32,14 @@ public class AppService {
             storesList.add(storeObj);
         }
         return storesList;
+    }
+
+    public List<User> getStoreCustomers(Store store){
+        Role customerRole = roleRepository.findByName("ROLE_CUSTOMER");
+        return this.userRepository.findStoreCustomers(customerRole.getName(), store.getName());
+    }
+    public List<Store> getAllStores(){
+        return storeRepository.findAll();
     }
 
     public CreditCard getLastCreditCard(){
@@ -70,11 +79,6 @@ public class AppService {
         return customersEntityList;
     }
 
-    public List<User> getStoreCustomers(Store store){
-        Role customerRole = roleRepository.findByName("ROLE_CUSTOMER");
-        return this.userRepository.findUserByStoreAndRole(store, customerRole);
-    }
-
     public CreditCard getCreditCardByNumber(String number){
         return this.creditCardRepository.findCreditCardByNumber(number);
     }
@@ -103,5 +107,21 @@ public class AppService {
 
     public void save(Store s){
         this.storeRepository.save(s);
+    }
+
+    public void save(Transaction t){
+        this.transactionRepository.save(t);
+    }
+
+    public List<Transaction> getAllTransactions(){
+        return this.transactionRepository.findAllByOrderByTimeDesc();
+    }
+
+    public List<Transaction> getStoreTransactions(Store s){
+        return this.transactionRepository.findAllByStore(s.getId());
+    }
+
+    public List<Transaction> getUserTransactions(User u){
+        return this.transactionRepository.findAllByUser(u.getId());
     }
 }
